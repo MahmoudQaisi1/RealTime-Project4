@@ -1,0 +1,2853 @@
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00002         
+                      00003                 PROCESSOR 16F877
+                      00004         ;       Clock = XT 4MHz, standard fuse settings
+2007   3731           00005                 __CONFIG 0x3731
+                      00006         
+                      00007         ;       LABEL EQUATES   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00008         
+                      00009                 INCLUDE "P16F877A.INC"  
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ;  MPASM PIC16F877A processor include
+                      00005 ; 
+                      00006 ;  (c) Copyright 1999-2013 Microchip Technology, All rights reserved
+                      00007 ;==========================================================================
+                      00008 
+                      00566         LIST
+                      00010         
+                      00011         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00012         ;;;;;;;;;;;DATA SEGMENT;;;;;;;;;;;;;;;;;
+                      00013         
+                      00014         
+Warning[207]: Found label after column 1. (Oper)
+  00000034            00015         Oper    EQU     34      ; Operation code store 
+Warning[207]: Found label after column 1. (Temp)
+  00000035            00016         Temp    EQU     35      ; Temporary register for operations
+                      00017         
+Warning[207]: Found label after column 1. (ResultHunTho)
+  00000036            00018         ResultHunTho EQU 36   ; Result Number
+Warning[207]: Found label after column 1. (ResultTenTho)
+  00000037            00019         ResultTenTho EQU 37
+Warning[207]: Found label after column 1. (ResultTho)
+  00000038            00020         ResultTho EQU   38
+Warning[207]: Found label after column 1. (ResultHun)
+  00000039            00021         ResultHun EQU   39
+Warning[207]: Found label after column 1. (ResultTen)
+  00000040            00022         ResultTen EQU   40
+Warning[207]: Found label after column 1. (ResultUnit)
+  00000041            00023         ResultUnit EQU 41
+                      00024         
+Warning[207]: Found label after column 1. (TempTenTho)
+  00000042            00025         TempTenTho EQU  42  ; Temporary Number for devision and modulation
+Warning[207]: Found label after column 1. (TempTho)
+  00000043            00026         TempTho EQU     43
+Warning[207]: Found label after column 1. (TempHun)
+  00000044            00027         TempHun EQU     44
+Warning[207]: Found label after column 1. (TempTen)
+  00000045            00028         TempTen EQU     45
+Warning[207]: Found label after column 1. (TempUnit)
+  00000046            00029         TempUnit EQU 46
+                      00030         
+Warning[207]: Found label after column 1. (Num1TenTho)
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+  00000047            00031         Num1TenTho EQU  47   ; Number  1
+Warning[207]: Found label after column 1. (Num1Tho)
+  00000048            00032         Num1Tho EQU     48
+Warning[207]: Found label after column 1. (Num1Hun)
+  00000049            00033         Num1Hun EQU     49
+Warning[207]: Found label after column 1. (Num1Ten)
+  00000050            00034         Num1Ten EQU     50
+Warning[207]: Found label after column 1. (Num1Unit)
+  00000051            00035         Num1Unit EQU 51
+                      00036         
+                      00037         
+Warning[207]: Found label after column 1. (Num2TenTho)
+  00000052            00038         Num2TenTho EQU  52    ; Number  2
+Warning[207]: Found label after column 1. (Num2Tho)
+  00000053            00039         Num2Tho EQU     53
+Warning[207]: Found label after column 1. (Num2Hun)
+  00000054            00040         Num2Hun EQU     54
+Warning[207]: Found label after column 1. (Num2Ten)
+  00000055            00041         Num2Ten EQU     55
+Warning[207]: Found label after column 1. (Num2Unit)
+  00000056            00042         Num2Unit EQU 56
+                      00043         
+Warning[207]: Found label after column 1. (cursor)
+  00000057            00044         cursor EQU 57     ; Cursor to determine at which state Iam
+                      00045         
+Warning[207]: Found label after column 1. (resultFlag)
+  00000058            00046         resultFlag EQU 58   ; flag to determine if I reached result state
+                      00047         
+Warning[207]: Found label after column 1. (timer0OverflowCounter)
+  00000059            00048         timer0OverflowCounter EQU 59  ; Timer0 interput counter
+                      00049 
+Warning[207]: Found label after column 1. (carryReg)
+  00000060            00050         carryReg EQU 60 ; carry for addition
+                      00051         
+Warning[207]: Found label after column 1. (ResultTenThoT)
+  00000062            00052         ResultTenThoT EQU       62   ; Temporary result for devision
+Warning[207]: Found label after column 1. (ResultThoT)
+  00000063            00053         ResultThoT EQU          63
+Warning[207]: Found label after column 1. (ResultHunT)
+  00000064            00054         ResultHunT EQU          64
+Warning[207]: Found label after column 1. (ResultTenT)
+  00000065            00055         ResultTenT EQU          65
+Warning[207]: Found label after column 1. (ResultUnitT)
+  00000066            00056         ResultUnitT EQU         66
+                      00057         
+Warning[207]: Found label after column 1. (divFlag)
+  00000067            00058         divFlag EQU     67    ;flag to determine if I had divison opreation
+Warning[207]: Found label after column 1. (keepPushCounter)
+  00000068            00059         keepPushCounter EQU     68
+Warning[207]: Found label after column 1. (RS)
+  00000001            00060         RS      EQU     1       ; Register select output bit
+Warning[207]: Found label after column 1. (E)
+  00000002            00061         E       EQU     2       ; Display data strobe
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00062         
+                      00063         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00064         ; Program begins ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00065         
+                      00066         
+                      00067                 ORG     0               ; Default start address 
+0000   0000           00068                 NOP                     ; required for ICD mode
+0001   2???           00069                 GOTO init
+                      00070         
+                      00071         ORG 0x04
+0004   2???           00072         GOTO ISR
+                      00073         
+Warning[207]: Found label after column 1. (ISR)
+0005                  00074         ISR:
+                      00075         ;;;;;;;;;;;;;;;timer0 interput ;;;;;;;;;;;;;;;;
+0005   1283 1303      00076                 BANKSEL INTCON                  
+0007   1D0B           00077                 BTFSS INTCON, TMR0IF    ;check if timer intrupt
+0008   2???           00078                 GOTO PushInterrupt      
+0009   110B           00079                 BCF INTCON, TMR0IF
+000A   128B           00080                 BCF INTCON, TMR0IE 
+                      00081         
+000B   0859           00082                 MOVF    timer0OverflowCounter,W         ; check if overflow couter reach 17 (two secods)
+000C   00B5           00083                 MOVWF   Temp
+000D   3017           00084                 MOVLW   0x17
+Message[305]: Using default destination of 1 (file).
+000E   02B5           00085                 SUBWF   Temp
+000F   1903           00086                 BTFSC   STATUS,Z
+0010   2???           00087                 GOTO twoSecondsReached
+0011   2???           00088                 GOTO incrementCounter
+                      00089         
+Warning[207]: Found label after column 1. (twoSecondsReached)
+0012                  00090         twoSecondsReached:
+                      00091 
+0012   0857           00092                 MOVF    cursor,W        ; check if we reached result state
+0013   00B5           00093                 MOVWF   Temp
+0014   300C           00094                 MOVLW   0x0C
+Message[305]: Using default destination of 1 (file).
+0015   02B5           00095                 SUBWF   Temp
+0016   1903           00096                 BTFSC   STATUS,Z
+0017   2???           00097                 GOTO    incrementCounter
+                      00098 
+0018   0857           00099                 MOVF    cursor,W        ; check if we reached result state
+0019   00B5           00100                 MOVWF   Temp
+001A   300D           00101                 MOVLW   0x0D
+Message[305]: Using default destination of 1 (file).
+001B   02B5           00102                 SUBWF   Temp
+001C   1903           00103                 BTFSC   STATUS,Z
+001D   2???           00104                 GOTO    restart
+                      00105 
+Message[305]: Using default destination of 1 (file).
+001E   0AD7           00106                 INCF cursor     ; Increment the cursor position every two seconds
+001F   0857           00107                 MOVF    cursor,W        ; check if we reached result state
+0020   00B5           00108                 MOVWF   Temp
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0021   300B           00109                 MOVLW   0x0B
+Message[305]: Using default destination of 1 (file).
+0022   02B5           00110                 SUBWF   Temp
+0023   1903           00111                 BTFSC   STATUS,Z
+0024   2???           00112                 GOTO    ResultCalc
+                      00113 
+                      00114 
+0025   01D9           00115                 CLRF timer0OverflowCounter
+                      00116 
+Warning[207]: Found label after column 1. (incrementCounter)
+0026                  00117         incrementCounter:
+Message[305]: Using default destination of 1 (file).
+0026   0AD9           00118                 INCF timer0OverflowCounter
+0027   0859           00119                 MOVF    timer0OverflowCounter,W         ; check if overflow couter reach 23 (three secod
+                            s)
+0028   00B5           00120                 MOVWF   Temp
+0029   3023           00121                 MOVLW   0x23
+Message[305]: Using default destination of 1 (file).
+002A   02B5           00122                 SUBWF   Temp
+002B   1903           00123                 BTFSC   STATUS,Z
+002C   2???           00124                 GOTO askKeep
+                      00125 
+002D   1283 1303      00126                 BANKSEL TMR0
+002F   0181           00127                 CLRF TMR0
+                      00128                 
+0030   1283 1303      00129                 BANKSEL INTCON
+0032   168B           00130                 BSF INTCON, TMR0IE 
+0033   2???           00131                 GOTO EndISR     
+                      00132         
+                      00133                 ;;;;;;;;;;;;;;;Push button interput ;;;;;;;;;;;;;;;;
+Warning[207]: Found label after column 1. (PushInterrupt)
+0034                  00134         PushInterrupt:
+0034   1C8B           00135                 BTFSS INTCON, INTF
+0035   2???           00136                 GOTO EndISR     
+0036   108B           00137                 BCF INTCON, INTF
+0037   120B           00138                 BCF INTCON, INTE
+                      00139                 
+                      00140                 ; THE TASK WHEN hit
+0038   0857           00141                 MOVF    cursor,W                ; check if cursor at first digit
+0039   00B5           00142                 MOVWF   Temp
+003A   3000           00143                 MOVLW   00
+Message[305]: Using default destination of 1 (file).
+003B   02B5           00144                 SUBWF   Temp
+003C   1903           00145                 BTFSC   STATUS,Z
+003D   2???           00146                 GOTO    state0
+                      00147         
+003E   0857           00148                 MOVF    cursor,W                ; check if cursor at second digit
+003F   00B5           00149                 MOVWF   Temp
+0040   3001           00150                 MOVLW   01
+Message[305]: Using default destination of 1 (file).
+0041   02B5           00151                 SUBWF   Temp
+0042   1903           00152                 BTFSC   STATUS,Z
+0043   2???           00153                 GOTO    state1
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00154         
+0044   0857           00155                 MOVF    cursor,W                ; check ... third
+0045   00B5           00156                 MOVWF   Temp
+0046   3002           00157                 MOVLW   02
+Message[305]: Using default destination of 1 (file).
+0047   02B5           00158                 SUBWF   Temp
+0048   1903           00159                 BTFSC   STATUS,Z
+0049   2???           00160                 GOTO    state2
+                      00161         
+004A   0857           00162                 MOVF    cursor,W                ; check ...fourth
+004B   00B5           00163                 MOVWF   Temp
+004C   3003           00164                 MOVLW   03
+Message[305]: Using default destination of 1 (file).
+004D   02B5           00165                 SUBWF   Temp
+004E   1903           00166                 BTFSC   STATUS,Z
+004F   2???           00167                 GOTO    state3
+                      00168         
+0050   0857           00169                 MOVF    cursor,W                ; check ...fifth
+0051   00B5           00170                 MOVWF   Temp
+0052   3004           00171                 MOVLW   04
+Message[305]: Using default destination of 1 (file).
+0053   02B5           00172                 SUBWF   Temp
+0054   1903           00173                 BTFSC   STATUS,Z
+0055   2???           00174                 GOTO    state4
+                      00175         
+                      00176                 
+0056   0857           00177                 MOVF    cursor,W                ; check if cursor at Operation char
+0057   00B5           00178                 MOVWF   Temp
+0058   3005           00179                 MOVLW   05
+Message[305]: Using default destination of 1 (file).
+0059   02B5           00180                 SUBWF   Temp
+005A   1903           00181                 BTFSC   STATUS,Z
+005B   2???           00182                 GOTO    state5
+                      00183                 
+005C   0857           00184                 MOVF    cursor,W                ; check if cursor at first digit of the second number
+005D   00B5           00185                 MOVWF   Temp
+005E   3006           00186                 MOVLW   06
+Message[305]: Using default destination of 1 (file).
+005F   02B5           00187                 SUBWF   Temp
+0060   1903           00188                 BTFSC   STATUS,Z
+0061   2???           00189                 GOTO    state6
+                      00190         
+0062   0857           00191                 MOVF    cursor,W                ; check ...second
+0063   00B5           00192                 MOVWF   Temp
+0064   3007           00193                 MOVLW   07
+Message[305]: Using default destination of 1 (file).
+0065   02B5           00194                 SUBWF   Temp
+0066   1903           00195                 BTFSC   STATUS,Z
+0067   2???           00196                 GOTO    state7
+                      00197         
+0068   0857           00198                 MOVF    cursor,W                ; check ...third
+0069   00B5           00199                 MOVWF   Temp
+006A   3008           00200                 MOVLW   08
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Message[305]: Using default destination of 1 (file).
+006B   02B5           00201                 SUBWF   Temp
+006C   1903           00202                 BTFSC   STATUS,Z
+006D   2???           00203                 GOTO    state8
+                      00204         
+006E   0857           00205                 MOVF    cursor,W                ; check ...fourth
+006F   00B5           00206                 MOVWF   Temp
+0070   3009           00207                 MOVLW   09
+Message[305]: Using default destination of 1 (file).
+0071   02B5           00208                 SUBWF   Temp
+0072   1903           00209                 BTFSC   STATUS,Z
+0073   2???           00210                 GOTO    state9
+                      00211         
+0074   0857           00212                 MOVF    cursor,W                ; check ...fifth
+0075   00B5           00213                 MOVWF   Temp
+0076   300A           00214                 MOVLW   0x0A
+Message[305]: Using default destination of 1 (file).
+0077   02B5           00215                 SUBWF   Temp
+0078   1903           00216                 BTFSC   STATUS,Z
+0079   2???           00217                 GOTO    state10 
+                      00218         
+007A   0857           00219                 MOVF    cursor,W                ; check ...fifth
+007B   00B5           00220                 MOVWF   Temp
+007C   300C           00221                 MOVLW   0x0C
+Message[305]: Using default destination of 1 (file).
+007D   02B5           00222                 SUBWF   Temp
+007E   1903           00223                 BTFSC   STATUS,Z
+007F   2???           00224                 GOTO    state11
+                      00225         
+                      00226                 
+                      00227 
+Warning[207]: Found label after column 1. (state0)
+0080                  00228         state0:
+Message[305]: Using default destination of 1 (file).
+0080   0AC7           00229                 INCF Num1TenTho
+0081   0847           00230                 MOVF    Num1TenTho,W            ;incrementng ten thousend register of Num 1
+0082   00B5           00231                 MOVWF   Temp
+0083   3007           00232                 MOVLW   07
+Message[305]: Using default destination of 1 (file).
+0084   02B5           00233                 SUBWF   Temp
+0085   1903           00234                 BTFSC   STATUS,Z
+0086   01C7           00235                 CLRF Num1TenTho
+0087   2???           00236                 GOTO continue
+                      00237         
+Warning[207]: Found label after column 1. (state1)
+0088                  00238         state1:                                 ;incrementng thousend register of Num 1
+Message[305]: Using default destination of 1 (file).
+0088   0AC8           00239                 INCF Num1Tho
+0089   0847           00240                 MOVF    Num1TenTho,W            ; check 
+008A   00B5           00241                 MOVWF   Temp
+008B   3006           00242                 MOVLW   06
+Message[305]: Using default destination of 1 (file).
+008C   02B5           00243                 SUBWF   Temp
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+008D   1903           00244                 BTFSC   STATUS,Z
+008E   2???           00245                 GOTO fullTenTho1
+008F   0848           00246                 MOVF    Num1Tho,W               ; check 
+0090   00B5           00247                 MOVWF   Temp
+0091   300A           00248                 MOVLW   0x0A
+Message[305]: Using default destination of 1 (file).
+0092   02B5           00249                 SUBWF   Temp
+0093   1803           00250                 BTFSC   STATUS,C
+0094   01C8           00251                 CLRF Num1Tho
+0095   2???           00252                 GOTO continue
+                      00253                 
+Warning[207]: Found label after column 1. (fullTenTho1)
+0096                  00254         fullTenTho1:
+0096   0848           00255                 MOVF    Num1Tho,W               ; check 
+0097   00B5           00256                 MOVWF   Temp
+0098   3006           00257                 MOVLW   06
+Message[305]: Using default destination of 1 (file).
+0099   02B5           00258                 SUBWF   Temp
+009A   1803           00259                 BTFSC   STATUS,C
+009B   01C8           00260                 CLRF Num1Tho
+009C   2???           00261                 GOTO continue
+                      00262         
+Warning[207]: Found label after column 1. (state2)
+009D                  00263         state2:                         ;incrementng Hundred register of Num 1
+Message[305]: Using default destination of 1 (file).
+009D   0AC9           00264                 INCF Num1Hun
+009E   0847           00265                 MOVF    Num1TenTho,W            ; check 
+009F   00B5           00266                 MOVWF   Temp
+00A0   3006           00267                 MOVLW   06
+Message[305]: Using default destination of 1 (file).
+00A1   02B5           00268                 SUBWF   Temp
+00A2   1903           00269                 BTFSC   STATUS,Z
+00A3   2???           00270                 GOTO fullTenTho2
+00A4   2???           00271                 GOTO HunNotMax
+                      00272                 
+Warning[207]: Found label after column 1. (fullTenTho2)
+00A5                  00273         fullTenTho2:
+00A5   0848           00274                 MOVF    Num1Tho,W               ; check 
+00A6   00B5           00275                 MOVWF   Temp
+00A7   3005           00276                 MOVLW   05
+Message[305]: Using default destination of 1 (file).
+00A8   02B5           00277                 SUBWF   Temp
+00A9   1903           00278                 BTFSC   STATUS,Z
+00AA   2???           00279                 GOTO fullTho2
+00AB   2???           00280                 GOTO HunNotMax
+Warning[207]: Found label after column 1. (fullTho2)
+00AC                  00281         fullTho2:
+00AC   0849           00282                 MOVF    Num1Hun,W               ; check 
+00AD   00B5           00283                 MOVWF   Temp
+00AE   3006           00284                 MOVLW   06
+Message[305]: Using default destination of 1 (file).
+00AF   02B5           00285                 SUBWF   Temp
+00B0   1803           00286                 BTFSC   STATUS,C
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE  8
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00B1   01C9           00287                 CLRF Num1Hun
+00B2   2???           00288                 GOTO continue
+                      00289         
+Warning[207]: Found label after column 1. (HunNotMax)
+00B3                  00290         HunNotMax:
+00B3   0849           00291                 MOVF    Num1Hun,W               ; check 
+00B4   00B5           00292                 MOVWF   Temp
+00B5   300A           00293                 MOVLW   0x0A
+Message[305]: Using default destination of 1 (file).
+00B6   02B5           00294                 SUBWF   Temp
+00B7   1803           00295                 BTFSC   STATUS,C
+00B8   01C9           00296                 CLRF Num1Hun
+00B9   2???           00297                 GOTO continue
+                      00298                 
+Warning[207]: Found label after column 1. (state3)
+00BA                  00299         state3:                         ;incrementng Tens register of Num 1
+Message[305]: Using default destination of 1 (file).
+00BA   0AD0           00300                 INCF Num1Ten
+00BB   0847           00301                 MOVF    Num1TenTho,W            ; check 
+00BC   00B5           00302                 MOVWF   Temp
+00BD   3006           00303                 MOVLW   06
+Message[305]: Using default destination of 1 (file).
+00BE   02B5           00304                 SUBWF   Temp
+00BF   1903           00305                 BTFSC   STATUS,Z
+00C0   2???           00306                 GOTO fullTenTho3
+00C1   2???           00307                 GOTO TenNotMax
+                      00308                 
+Warning[207]: Found label after column 1. (fullTenTho3)
+00C2                  00309         fullTenTho3:
+00C2   0848           00310                 MOVF    Num1Tho,W               ; check 
+00C3   00B5           00311                 MOVWF   Temp
+00C4   3005           00312                 MOVLW   05
+Message[305]: Using default destination of 1 (file).
+00C5   02B5           00313                 SUBWF   Temp
+00C6   1903           00314                 BTFSC   STATUS,Z
+00C7   2???           00315                 GOTO fullTho3
+00C8   2???           00316                 GOTO TenNotMax
+Warning[207]: Found label after column 1. (fullTho3)
+00C9                  00317         fullTho3:
+00C9   0849           00318                 MOVF    Num1Hun,W               ; check 
+00CA   00B5           00319                 MOVWF   Temp
+00CB   3005           00320                 MOVLW   05
+Message[305]: Using default destination of 1 (file).
+00CC   02B5           00321                 SUBWF   Temp
+00CD   1903           00322                 BTFSC   STATUS,Z
+00CE   2???           00323                 GOTO fullHun3
+00CF   2???           00324                 GOTO TenNotMax
+                      00325         
+Warning[207]: Found label after column 1. (fullHun3)
+00D0                  00326         fullHun3:
+00D0   0850           00327                 MOVF    Num1Ten,W               ; check 
+00D1   00B5           00328                 MOVWF   Temp
+00D2   3004           00329                 MOVLW   04
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE  9
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Message[305]: Using default destination of 1 (file).
+00D3   02B5           00330                 SUBWF   Temp
+00D4   1803           00331                 BTFSC   STATUS,C
+00D5   01D0           00332                 CLRF Num1Ten
+00D6   2???           00333                 GOTO continue
+                      00334                 
+Warning[207]: Found label after column 1. (TenNotMax)
+00D7                  00335         TenNotMax:
+00D7   0850           00336                 MOVF    Num1Ten,W               ; check 
+00D8   00B5           00337                 MOVWF   Temp
+00D9   300A           00338                 MOVLW   0x0A
+Message[305]: Using default destination of 1 (file).
+00DA   02B5           00339                 SUBWF   Temp
+00DB   1803           00340                 BTFSC   STATUS,C
+00DC   01D0           00341                 CLRF Num1Ten
+00DD   2???           00342                 GOTO continue
+                      00343         
+                      00344         
+Warning[207]: Found label after column 1. (state4)
+00DE                  00345         state4:         ;incrementng Units register of Num 1
+Message[305]: Using default destination of 1 (file).
+00DE   0AD1           00346                 INCF Num1Unit
+00DF   0847           00347                 MOVF    Num1TenTho,W            ; check 
+00E0   00B5           00348                 MOVWF   Temp
+00E1   3006           00349                 MOVLW   06
+Message[305]: Using default destination of 1 (file).
+00E2   02B5           00350                 SUBWF   Temp
+00E3   1903           00351                 BTFSC   STATUS,Z
+00E4   2???           00352                 GOTO fullTenTho4
+00E5   2???           00353                 GOTO UnitNotMax
+                      00354                 
+Warning[207]: Found label after column 1. (fullTenTho4)
+00E6                  00355         fullTenTho4:
+00E6   0848           00356                 MOVF    Num1Tho,W               ; check 
+00E7   00B5           00357                 MOVWF   Temp
+00E8   3005           00358                 MOVLW   05
+Message[305]: Using default destination of 1 (file).
+00E9   02B5           00359                 SUBWF   Temp
+00EA   1903           00360                 BTFSC   STATUS,Z
+00EB   2???           00361                 GOTO fullTho4
+00EC   2???           00362                 GOTO UnitNotMax
+                      00363                 
+Warning[207]: Found label after column 1. (fullTho4)
+00ED                  00364         fullTho4:
+00ED   0849           00365                 MOVF    Num1Hun,W               ; check 
+00EE   00B5           00366                 MOVWF   Temp
+00EF   3005           00367                 MOVLW   05
+Message[305]: Using default destination of 1 (file).
+00F0   02B5           00368                 SUBWF   Temp
+00F1   1903           00369                 BTFSC   STATUS,Z
+00F2   2???           00370                 GOTO fullHun4
+00F3   2???           00371                 GOTO UnitNotMax
+                      00372         
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 10
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Warning[207]: Found label after column 1. (fullHun4)
+00F4                  00373         fullHun4:
+00F4   0850           00374                 MOVF    Num1Ten,W               ; check 
+00F5   00B5           00375                 MOVWF   Temp
+00F6   3003           00376                 MOVLW   03
+Message[305]: Using default destination of 1 (file).
+00F7   02B5           00377                 SUBWF   Temp
+00F8   1903           00378                 BTFSC   STATUS,Z
+00F9   2???           00379                 GOTO fullTen4
+00FA   2???           00380                 GOTO UnitNotMax
+                      00381                 
+Warning[207]: Found label after column 1. (fullTen4)
+00FB                  00382         fullTen4:
+00FB   0851           00383                 MOVF    Num1Unit,W              ; check 
+00FC   00B5           00384                 MOVWF   Temp
+00FD   3006           00385                 MOVLW   06
+Message[305]: Using default destination of 1 (file).
+00FE   02B5           00386                 SUBWF   Temp
+00FF   1803           00387                 BTFSC   STATUS,C
+0100   01D1           00388                 CLRF Num1Unit
+0101   2???           00389                 GOTO continue
+                      00390                 
+Warning[207]: Found label after column 1. (UnitNotMax)
+0102                  00391         UnitNotMax:
+0102   0851           00392                 MOVF    Num1Unit,W              ; check 
+0103   00B5           00393                 MOVWF   Temp
+0104   300A           00394                 MOVLW   0x0A
+Message[305]: Using default destination of 1 (file).
+0105   02B5           00395                 SUBWF   Temp
+0106   1803           00396                 BTFSC   STATUS,C
+0107   01D1           00397                 CLRF Num1Unit
+0108   2???           00398                 GOTO continue
+                      00399         
+                      00400         
+Warning[207]: Found label after column 1. (state5)
+0109                  00401         state5:   ;changing opreation register
+                      00402         
+0109   0834           00403                 MOVF    Oper,W          
+010A   00B5           00404                 MOVWF   Temp
+010B   302B           00405                 MOVLW   '+'
+Message[305]: Using default destination of 1 (file).
+010C   02B5           00406                 SUBWF   Temp
+010D   1903           00407                 BTFSC   STATUS,Z
+010E   2???           00408                 GOTO    addoper
+                      00409                 
+010F   0834           00410                 MOVF    Oper,W  
+0110   00B5           00411                 MOVWF   Temp
+0111   302F           00412                 MOVLW   '/'
+Message[305]: Using default destination of 1 (file).
+0112   02B5           00413                 SUBWF   Temp
+0113   1903           00414                 BTFSC   STATUS,Z
+0114   2???           00415                 GOTO    divoper
+                      00416                 
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 11
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0115   0834           00417                 MOVF    Oper,W  
+0116   00B5           00418                 MOVWF   Temp
+0117   3025           00419                 MOVLW   '%'
+Message[305]: Using default destination of 1 (file).
+0118   02B5           00420                 SUBWF   Temp
+0119   1903           00421                 BTFSC   STATUS,Z
+011A   2???           00422                 GOTO    modoper
+                      00423                 
+Warning[207]: Found label after column 1. (addoper)
+011B                  00424         addoper:
+011B   302F           00425                 movlW '/'
+011C   00B4           00426                 MOVWF   Oper
+011D   2???           00427                 GOTO continue
+                      00428         
+Warning[207]: Found label after column 1. (divoper)
+011E                  00429         divoper:
+011E   3025           00430                 movlW '%'
+011F   00B4           00431                 MOVWF   Oper
+0120   2???           00432                 GOTO continue
+                      00433                 
+Warning[207]: Found label after column 1. (modoper)
+0121                  00434         modoper:
+0121   302B           00435                 movlW '+'
+0122   00B4           00436                 MOVWF   Oper
+0123   2???           00437                 GOTO continue
+                      00438                 
+0124   2???           00439                 GOTO continue
+                      00440         
+                      00441         
+                      00442         
+Warning[207]: Found label after column 1. (state6)
+0125                  00443         state6:     
+Message[305]: Using default destination of 1 (file).
+0125   0AD2           00444                 INCF Num2TenTho
+0126   0852           00445                 MOVF    Num2TenTho,W            ;incrementng ten thousend register of Num 2
+0127   00B5           00446                 MOVWF   Temp
+0128   3007           00447                 MOVLW   07
+Message[305]: Using default destination of 1 (file).
+0129   02B5           00448                 SUBWF   Temp
+012A   1903           00449                 BTFSC   STATUS,Z
+012B   01D2           00450                 CLRF Num2TenTho
+012C   2???           00451                 GOTO continue
+                      00452         
+Warning[207]: Found label after column 1. (state7)
+012D                  00453         state7:                                 ;incrementng thousend register of Num 2
+Message[305]: Using default destination of 1 (file).
+012D   0AD3           00454                 INCF Num2Tho
+012E   0852           00455                 MOVF    Num2TenTho,W            ; check 
+012F   00B5           00456                 MOVWF   Temp
+0130   3006           00457                 MOVLW   06
+Message[305]: Using default destination of 1 (file).
+0131   02B5           00458                 SUBWF   Temp
+0132   1903           00459                 BTFSC   STATUS,Z
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 12
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0133   2???           00460                 GOTO fullTenTho7
+0134   0853           00461                 MOVF    Num2Tho,W               ; check 
+0135   00B5           00462                 MOVWF   Temp
+0136   300A           00463                 MOVLW   0x0A
+Message[305]: Using default destination of 1 (file).
+0137   02B5           00464                 SUBWF   Temp
+0138   1803           00465                 BTFSC   STATUS,C
+0139   01D3           00466                 CLRF Num2Tho
+013A   2???           00467                 GOTO continue
+                      00468                 
+Warning[207]: Found label after column 1. (fullTenTho7)
+013B                  00469         fullTenTho7:
+013B   0853           00470                 MOVF    Num2Tho,W               ; check 
+013C   00B5           00471                 MOVWF   Temp
+013D   3006           00472                 MOVLW   06
+Message[305]: Using default destination of 1 (file).
+013E   02B5           00473                 SUBWF   Temp
+013F   1803           00474                 BTFSC   STATUS,C
+0140   01D3           00475                 CLRF Num2Tho
+0141   2???           00476                 GOTO continue
+                      00477         
+Warning[207]: Found label after column 1. (state8)
+0142                  00478         state8:                         ;incrementng Hundred register of Num 2
+Message[305]: Using default destination of 1 (file).
+0142   0AD4           00479                 INCF Num2Hun
+0143   0852           00480                 MOVF    Num2TenTho,W            ; check 
+0144   00B5           00481                 MOVWF   Temp
+0145   3006           00482                 MOVLW   06
+Message[305]: Using default destination of 1 (file).
+0146   02B5           00483                 SUBWF   Temp
+0147   1903           00484                 BTFSC   STATUS,Z
+0148   2???           00485                 GOTO fullTenTho8
+0149   2???           00486                 GOTO HunNotMax2
+                      00487                 
+Warning[207]: Found label after column 1. (fullTenTho8)
+014A                  00488         fullTenTho8:
+014A   0853           00489                 MOVF    Num2Tho,W               ; check 
+014B   00B5           00490                 MOVWF   Temp
+014C   3005           00491                 MOVLW   05
+Message[305]: Using default destination of 1 (file).
+014D   02B5           00492                 SUBWF   Temp
+014E   1903           00493                 BTFSC   STATUS,Z
+014F   2???           00494                 GOTO fullTho8
+0150   2???           00495                 GOTO HunNotMax2
+Warning[207]: Found label after column 1. (fullTho8)
+0151                  00496         fullTho8:
+0151   0854           00497                 MOVF    Num2Hun,W               ; check 
+0152   00B5           00498                 MOVWF   Temp
+0153   3006           00499                 MOVLW   06
+Message[305]: Using default destination of 1 (file).
+0154   02B5           00500                 SUBWF   Temp
+0155   1803           00501                 BTFSC   STATUS,C
+0156   01D4           00502                 CLRF Num2Hun
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 13
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0157   2???           00503                 GOTO continue
+                      00504         
+Warning[207]: Found label after column 1. (HunNotMax2)
+0158                  00505         HunNotMax2:
+0158   0854           00506                 MOVF    Num2Hun,W               ; check 
+0159   00B5           00507                 MOVWF   Temp
+015A   300A           00508                 MOVLW   0x0A
+Message[305]: Using default destination of 1 (file).
+015B   02B5           00509                 SUBWF   Temp
+015C   1803           00510                 BTFSC   STATUS,C
+015D   01D4           00511                 CLRF Num2Hun
+015E   2???           00512                 GOTO continue
+                      00513                 
+Warning[207]: Found label after column 1. (state9)
+015F                  00514         state9:                         ;incrementng Tens register of Num 2
+Message[305]: Using default destination of 1 (file).
+015F   0AD5           00515                 INCF Num2Ten
+0160   0852           00516                 MOVF    Num2TenTho,W            ; check 
+0161   00B5           00517                 MOVWF   Temp
+0162   3006           00518                 MOVLW   06
+Message[305]: Using default destination of 1 (file).
+0163   02B5           00519                 SUBWF   Temp
+0164   1903           00520                 BTFSC   STATUS,Z
+0165   2???           00521                 GOTO fullTenTho9
+0166   2???           00522                 GOTO TenNotMax2
+                      00523                 
+Warning[207]: Found label after column 1. (fullTenTho9)
+0167                  00524         fullTenTho9:
+0167   0853           00525                 MOVF    Num2Tho,W               ; check 
+0168   00B5           00526                 MOVWF   Temp
+0169   3005           00527                 MOVLW   05
+Message[305]: Using default destination of 1 (file).
+016A   02B5           00528                 SUBWF   Temp
+016B   1903           00529                 BTFSC   STATUS,Z
+016C   2???           00530                 GOTO fullTho9
+016D   2???           00531                 GOTO TenNotMax2
+Warning[207]: Found label after column 1. (fullTho9)
+016E                  00532         fullTho9:
+016E   0854           00533                 MOVF    Num2Hun,W               ; check 
+016F   00B5           00534                 MOVWF   Temp
+0170   3005           00535                 MOVLW   05
+Message[305]: Using default destination of 1 (file).
+0171   02B5           00536                 SUBWF   Temp
+0172   1903           00537                 BTFSC   STATUS,Z
+0173   2???           00538                 GOTO fullHun9
+0174   2???           00539                 GOTO TenNotMax2
+                      00540         
+Warning[207]: Found label after column 1. (fullHun9)
+0175                  00541         fullHun9:
+0175   0855           00542                 MOVF    Num2Ten,W               ; check 
+0176   00B5           00543                 MOVWF   Temp
+0177   3004           00544                 MOVLW   04
+Message[305]: Using default destination of 1 (file).
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 14
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0178   02B5           00545                 SUBWF   Temp
+0179   1803           00546                 BTFSC   STATUS,C
+017A   01D5           00547                 CLRF Num2Ten
+017B   2???           00548                 GOTO continue
+                      00549                 
+Warning[207]: Found label after column 1. (TenNotMax2)
+017C                  00550         TenNotMax2:
+017C   0855           00551                 MOVF    Num2Ten,W               ; check 
+017D   00B5           00552                 MOVWF   Temp
+017E   300A           00553                 MOVLW   0x0A
+Message[305]: Using default destination of 1 (file).
+017F   02B5           00554                 SUBWF   Temp
+0180   1803           00555                 BTFSC   STATUS,C
+0181   01D5           00556                 CLRF Num2Ten
+0182   2???           00557                 GOTO continue
+                      00558         
+                      00559         
+Warning[207]: Found label after column 1. (state10)
+0183                  00560         state10:                ;incrementng Units register of Num 2
+Message[305]: Using default destination of 1 (file).
+0183   0AD6           00561                 INCF Num2Unit
+0184   0852           00562                 MOVF    Num2TenTho,W            ; check 
+0185   00B5           00563                 MOVWF   Temp
+0186   3006           00564                 MOVLW   06
+Message[305]: Using default destination of 1 (file).
+0187   02B5           00565                 SUBWF   Temp
+0188   1903           00566                 BTFSC   STATUS,Z
+0189   2???           00567                 GOTO fullTenTho10
+018A   2???           00568                 GOTO UnitNotMax2
+                      00569                 
+Warning[207]: Found label after column 1. (fullTenTho10)
+018B                  00570         fullTenTho10:
+018B   0853           00571                 MOVF    Num2Tho,W               ; check 
+018C   00B5           00572                 MOVWF   Temp
+018D   3005           00573                 MOVLW   05
+Message[305]: Using default destination of 1 (file).
+018E   02B5           00574                 SUBWF   Temp
+018F   1903           00575                 BTFSC   STATUS,Z
+0190   2???           00576                 GOTO fullTho10
+0191   2???           00577                 GOTO UnitNotMax2
+                      00578                 
+Warning[207]: Found label after column 1. (fullTho10)
+0192                  00579         fullTho10:
+0192   0854           00580                 MOVF    Num2Hun,W               ; check 
+0193   00B5           00581                 MOVWF   Temp
+0194   3005           00582                 MOVLW   05
+Message[305]: Using default destination of 1 (file).
+0195   02B5           00583                 SUBWF   Temp
+0196   1903           00584                 BTFSC   STATUS,Z
+0197   2???           00585                 GOTO fullHun10
+0198   2???           00586                 GOTO UnitNotMax2
+                      00587         
+Warning[207]: Found label after column 1. (fullHun10)
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 15
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0199                  00588         fullHun10:
+0199   0855           00589                 MOVF    Num2Ten,W               ; check 
+019A   00B5           00590                 MOVWF   Temp
+019B   3003           00591                 MOVLW   03
+Message[305]: Using default destination of 1 (file).
+019C   02B5           00592                 SUBWF   Temp
+019D   1903           00593                 BTFSC   STATUS,Z
+019E   2???           00594                 GOTO fullTen10
+019F   2???           00595                 GOTO UnitNotMax2
+                      00596                 
+Warning[207]: Found label after column 1. (fullTen10)
+01A0                  00597         fullTen10:
+01A0   0856           00598                 MOVF    Num2Unit,W              ; check 
+01A1   00B5           00599                 MOVWF   Temp
+01A2   3006           00600                 MOVLW   06
+Message[305]: Using default destination of 1 (file).
+01A3   02B5           00601                 SUBWF   Temp
+01A4   1803           00602                 BTFSC   STATUS,C
+01A5   01D6           00603                 CLRF Num2Unit
+01A6   2???           00604                 GOTO continue
+                      00605                 
+Warning[207]: Found label after column 1. (UnitNotMax2)
+01A7                  00606         UnitNotMax2:
+01A7   0856           00607                 MOVF    Num2Unit,W              ; check 
+01A8   00B5           00608                 MOVWF   Temp
+01A9   300A           00609                 MOVLW   0x0A
+Message[305]: Using default destination of 1 (file).
+01AA   02B5           00610                 SUBWF   Temp
+01AB   1803           00611                 BTFSC   STATUS,C
+01AC   01D6           00612                 CLRF Num2Unit
+01AD   2???           00613                 GOTO continue
+                      00614         
+                      00615         
+                      00616 ;;;;;;;;;;;;;;;;; Calculation at the result state;;;;;;;;;;
+Warning[207]: Found label after column 1. (ResultCalc)
+01AE                  00617         ResultCalc:
+                      00618 
+01AE   01D9           00619                 CLRF timer0OverflowCounter
+Message[305]: Using default destination of 1 (file).
+01AF   0AD7           00620                 INCF cursor     
+01B0   3001           00621                 MOVLW   0x01
+01B1   00D8           00622                 MOVWF resultFlag
+01B2   1283 1303      00623                 BANKSEL TMR0
+01B4   0181           00624                 CLRF TMR0
+                      00625                 
+01B5   1283 1303      00626                 BANKSEL INTCON
+01B7   168B           00627                 BSF INTCON, TMR0IE      
+                      00628 
+01B8   0834           00629                 MOVF    Oper,W  
+01B9   00B5           00630                 MOVWF   Temp
+01BA   302B           00631                 MOVLW   '+'
+Message[305]: Using default destination of 1 (file).
+01BB   02B5           00632                 SUBWF   Temp
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 16
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+01BC   1903           00633                 BTFSC   STATUS,Z
+01BD   2???           00634                 GOTO    addcalc
+                      00635                 
+01BE   0834           00636                 MOVF    Oper,W          
+01BF   00B5           00637                 MOVWF   Temp
+01C0   302F           00638                 MOVLW   '/'
+Message[305]: Using default destination of 1 (file).
+01C1   02B5           00639                 SUBWF   Temp
+01C2   1903           00640                 BTFSC   STATUS,Z
+01C3   2???           00641                 GOTO    divcalc
+                      00642                 
+01C4   0834           00643                 MOVF    Oper,W  
+01C5   00B5           00644                 MOVWF   Temp
+01C6   3025           00645                 MOVLW   '%'
+Message[305]: Using default destination of 1 (file).
+01C7   02B5           00646                 SUBWF   Temp
+01C8   1903           00647                 BTFSC   STATUS,Z
+01C9   2???           00648                 GOTO    modcalc
+                      00649                 
+                      00650    ;;;;;;;;;;;;;;;;;;;;;;;Addtion Calculation ;;;;;;;;;;;;;;;;;;;               
+01CA                  00651 addcalc:
+                      00652 
+01CA   0851           00653     MOVF                Num1Unit,W
+01CB   0756           00654     ADDWF               Num2Unit, W
+01CC   00B5           00655         MOVWF           Temp
+01CD   300A           00656     MOVLW               0x0A
+01CE   0235           00657         SUBWF           Temp,W
+01CF   1803           00658     BTFSC       STATUS,C
+01D0   2???           00659     GOTO        carryTen
+01D1   0835           00660     MOVF                Temp,W
+01D2   00C1           00661     MOVWF       ResultUnit
+01D3   01E0           00662     CLRf        carryReg
+01D4   2???           00663     GOTO        TensAdd
+                      00664 
+01D5                  00665 carryTen:
+01D5   300A           00666         MOVLW           0x0A 
+01D6   0235           00667         SUBWF           Temp, W      
+01D7   00C1           00668     MOVWF       ResultUnit
+01D8   3001           00669     MOVLW       01
+01D9   00E0           00670     MOVWF       carryReg
+                      00671 
+01DA                  00672 TensAdd:
+01DA   0850           00673     MOVF        Num1Ten, W
+01DB   0755           00674     ADDWF       Num2Ten, W
+01DC   0760           00675     ADDWF       carryReg, W
+01DD   01E0           00676     CLRf        carryReg
+01DE   00B5           00677         MOVWF           Temp
+01DF   300A           00678         MOVLW           0x0A
+01E0   0235           00679         SUBWF           Temp,W
+01E1   1803           00680     BTFSC       STATUS,C
+01E2   2???           00681     GOTO        carryHun
+01E3   0835           00682         MOVF            Temp,W
+01E4   00C0           00683     MOVWF       ResultTen
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 17
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+01E5   2???           00684     GOTO         HunAdd
+                      00685 
+01E6                  00686 carryHun:
+01E6   300A           00687         MOVLW           0x0A 
+01E7   0235           00688         SUBWF           Temp, W  
+01E8   00C0           00689     MOVWF       ResultTen
+01E9   3001           00690     MOVLW       01
+01EA   00E0           00691     MOVWF       carryReg
+                      00692 
+01EB                  00693 HunAdd:
+01EB   0849           00694     MOVF        Num1Hun, W
+01EC   0754           00695     ADDWF       Num2Hun, W
+01ED   0760           00696     ADDWF       carryReg, W
+01EE   01E0           00697     CLRf        carryReg
+01EF   00B5           00698         MOVWF           Temp
+01F0   300A           00699         MOVLW           0x0A
+01F1   0235           00700         SUBWF           Temp,W
+01F2   1803           00701     BTFSC       STATUS,C
+01F3   2???           00702     GOTO                carryTho
+01F4   0835           00703     MOVF                Temp,W
+01F5   00B9           00704     MOVWF               ResultHun
+01F6   2???           00705     GOTO                ThoAdd
+                      00706 
+01F7                  00707 carryTho:
+01F7   300A           00708         MOVLW           0x0A 
+01F8   0235           00709         SUBWF           Temp, W 
+01F9   00B9           00710     MOVWF               ResultHun
+01FA   3001           00711     MOVLW               01
+01FB   00E0           00712     MOVWF               carryReg
+                      00713 
+01FC                  00714 ThoAdd:
+01FC   0848           00715     MOVF                Num1Tho, W
+01FD   0753           00716     ADDWF               Num2Tho, W
+01FE   0760           00717     ADDWF               carryReg, W
+01FF   01E0           00718     CLRf                carryReg
+0200   00B5           00719         MOVWF           Temp
+0201   300A           00720         MOVLW           0x0A
+0202   0235           00721         SUBWF           Temp,W
+0203   1803           00722     BTFSC       STATUS,C
+0204   2???           00723     GOTO        carryTenTho
+0205   0835           00724     MOVF                Temp,W
+0206   00B8           00725     MOVWF       ResultTho
+0207   2???           00726     GOTO        TenThoAdd
+                      00727 
+0208                  00728 carryTenTho:
+0208   300A           00729         MOVLW           0x0A 
+0209   0235           00730         SUBWF           Temp, W
+020A   00B7           00731     MOVWF               ResultTenTho
+020B   3001           00732     MOVLW               01
+020C   00E0           00733     MOVWF               carryReg
+                      00734 
+020D                  00735 TenThoAdd:
+020D   0847           00736     MOVF                Num1TenTho, W
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 18
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+020E   0752           00737     ADDWF               Num2TenTho, W
+020F   0760           00738     ADDWF               carryReg, W
+0210   01E0           00739     CLRf                carryReg
+0211   00B5           00740         MOVWF           Temp
+0212   300A           00741         MOVLW           0x0A
+0213   0235           00742         SUBWF           Temp,W
+0214   1803           00743     BTFSC       STATUS,C
+0215   2???           00744     GOTO        carryHunTho
+0216   0835           00745     MOVF                Temp,W
+0217   00B7           00746     MOVWF       ResultTenTho
+0218   2???           00747     GOTO        continue       
+                      00748 
+0219                  00749 carryHunTho:
+0219   300A           00750         MOVLW           0x0A 
+021A   0235           00751         SUBWF           Temp, W
+021B   00B7           00752     MOVWF ResultTenTho
+021C   3001           00753     MOVLW 01
+021D   00B6           00754     MOVWF ResultHunTho
+021E   2???           00755     GOTO continue
+                      00756     
+                      00757   
+                      00758    ;;;;;;;;;;;;;;;;;;;;;;;Division Calculation ;;;;;;;;;;;;;;;;;;;
+021F                  00759 divcalc:
+021F   3001           00760         MOVLW   0x01
+0220   00E7           00761         MOVWF divFlag
+                      00762                 
+0221   0851           00763         MOVF    Num1Unit,W
+0222   00C6           00764         MOVWF   TempUnit
+0223   0850           00765         MOVF    Num1Ten,W
+0224   00C5           00766         MOVWF   TempTen
+0225   0849           00767         MOVF    Num1Hun,W
+0226   00C4           00768         MOVWF   TempHun
+0227   0848           00769         MOVF    Num1Tho,W
+0228   00C3           00770         MOVWF   TempTho
+0229   0847           00771         MOVF    Num1TenTho,W
+022A   00C2           00772         MOVWF   TempTenTho
+                      00773 
+022B                  00774 DivLoop:
+022B   1403           00775                 BSF             STATUS,C                        ; Negative detect flag  
+022C   0852           00776                 MOVF    Num2TenTho,W            ; get first number
+022D   0242           00777                 SUBWF   TempTenTho,W            ; subtract second
+022E   00E2           00778                 MOVWF   ResultTenThoT           ; and store result
+022F   1C03           00779                 BTFSS   STATUS,C                        ; answer negative?
+0230   2???           00780                 GOTO    exitDiv                         ; yes, minus result
+                      00781         
+0231   1403           00782                 BSF             STATUS,C                        ; Negative detect flag          
+0232   0853           00783                 MOVF    Num2Tho,W                       ; get first number
+0233   0243           00784                 SUBWF   TempTho,W                       ; subtract second
+0234   00E3           00785                 MOVWF   ResultThoT                      ; and store result
+0235   1C03           00786                 BTFSS   STATUS,C                        ; answer negative?
+0236   2???           00787                 GOTO    takeFromTenThoDiv       ; yes, minus result
+0237   2???           00788                 GOTO    subHunDiv
+                      00789 
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 19
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0238                  00790 takeFromTenThoDiv:
+0238   0862           00791         MOVF    ResultTenThoT,W         ; 
+0239   1903           00792         BTFSC   STATUS,Z                        ; check if Z
+023A   2???           00793         GOTO    exitDiv
+Message[305]: Using default destination of 1 (file).
+023B   03E2           00794         DECF    ResultTenThoT
+023C   0843           00795         MOVF    TempTho,W
+023D   3E0A           00796         ADDLW   D'10'
+023E   00B5           00797         MOVWF   Temp
+023F   0853           00798         MOVF    Num2Tho,W               ; get first number
+0240   0235           00799         SUBWF   Temp,W                  ; subtract second
+0241   00E3           00800         MOVWF   ResultThoT              ; and store result
+                      00801         
+0242                  00802 subHunDiv:
+0242   1403           00803         BSF             STATUS,C                        ; Negative detect flag          
+0243   0854           00804         MOVF    Num2Hun,W                       ; get first number
+0244   0244           00805         SUBWF   TempHun,W                       ; subtract second
+0245   00E4           00806         MOVWF   ResultHunT                      ; and store result
+0246   1C03           00807         BTFSS   STATUS,C                        ; answer negative?
+0247   2???           00808         GOTO    takeFromThoDiv          ; yes, minus result
+0248   2???           00809         GOTO    subTenDiv
+                      00810 
+0249                  00811 takeFromThoDiv:
+0249   0863           00812         MOVF    ResultThoT,W            ; 
+024A   1903           00813         BTFSC   STATUS,Z        ; check if Z
+024B   2???           00814         GOTO    takeFromTenTho2Div
+Message[305]: Using default destination of 1 (file).
+024C   03E3           00815         DECF    ResultThoT
+024D   0844           00816         MOVF    TempHun,W
+024E   3E0A           00817         ADDLW   D'10'
+024F   00B5           00818         MOVWF   Temp
+0250   0854           00819         MOVF    Num2Hun,W               ; get first number
+0251   0235           00820         SUBWF   Temp,W          ; subtract second
+0252   00E4           00821         MOVWF   ResultHunT              ; and store result
+0253   2???           00822         GOTO    subTenDiv
+                      00823 
+0254                  00824 takeFromTenTho2Div:
+0254   0862           00825         MOVF    ResultTenThoT,W         ; 
+0255   1903           00826         BTFSC   STATUS,Z        ; check if Z
+0256   2???           00827         GOTO    exitDiv
+Message[305]: Using default destination of 1 (file).
+0257   03E2           00828         DECF    ResultTenThoT
+0258   3009           00829         MOVLW   D'9'
+0259   00E3           00830         MOVWF   ResultThoT              ; and store result
+025A   0844           00831         MOVF    TempHun,W
+025B   3E0A           00832         ADDLW   D'10'
+025C   00B5           00833         MOVWF   Temp
+025D   0854           00834         MOVF    Num2Hun,W               ; get first number
+025E   0235           00835         SUBWF   Temp,W          ; subtract second
+025F   00E4           00836         MOVWF   ResultHunT              ; and store result
+                      00837 
+                      00838         
+0260                  00839 subTenDiv:      
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 20
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0260   1403           00840         BSF             STATUS,C                        ; Negative detect flag          
+0261   0855           00841         MOVF    Num2Ten,W                       ; get first number
+0262   0245           00842         SUBWF   TempTen,W                       ; subtract second
+0263   00E5           00843         MOVWF   ResultTenT                      ; and store result
+                      00844         
+0264   1C03           00845         BTFSS   STATUS,C                        ; answer negative?
+0265   2???           00846         GOTO    takeFromHunDiv          ; yes, minus result
+0266   2???           00847         GOTO    subUnitDiv
+                      00848 
+0267                  00849 takeFromHunDiv:
+0267   0864           00850         MOVF    ResultHunT,W            ; 
+0268   1903           00851         BTFSC   STATUS,Z        ; check if Z
+0269   2???           00852         GOTO    takeFromTho2Div
+Message[305]: Using default destination of 1 (file).
+026A   03E4           00853         DECF    ResultHunT
+026B   0845           00854         MOVF    TempTen,W
+026C   3E0A           00855         ADDLW   D'10'
+026D   00B5           00856         MOVWF   Temp
+026E   0855           00857         MOVF    Num2Ten,W               ; get first number
+026F   0235           00858         SUBWF   Temp,W          ; subtract second
+0270   00E5           00859         MOVWF   ResultTenT              ; and store result
+0271   2???           00860         GOTO    subUnitDiv
+                      00861         
+0272                  00862 takeFromTho2Div:
+0272   0863           00863         MOVF    ResultThoT,W            ; 
+0273   1903           00864         BTFSC   STATUS,Z        ; check if Z
+0274   2???           00865         GOTO    takeFromTenTho3Div
+Message[305]: Using default destination of 1 (file).
+0275   03E3           00866         DECF    ResultThoT
+0276   3009           00867         MOVLW   D'9'
+0277   00E4           00868         MOVWF   ResultHunT
+0278   0845           00869         MOVF    TempTen,W
+0279   3E0A           00870         ADDLW   D'10'
+027A   00B5           00871         MOVWF   Temp
+027B   0855           00872         MOVF    Num2Ten,W               ; get first number
+027C   0235           00873         SUBWF   Temp,W          ; subtract second
+027D   00E5           00874         MOVWF   ResultTenT              ; and store result
+027E   2???           00875         GOTO    subUnitDiv
+                      00876 
+027F                  00877 takeFromTenTho3Div:
+027F   0862           00878         MOVF    ResultTenThoT,W         ; 
+0280   1903           00879         BTFSC   STATUS,Z        ; check if Z
+0281   2???           00880         GOTO    exitDiv
+Message[305]: Using default destination of 1 (file).
+0282   03E2           00881         DECF    ResultTenThoT
+0283   3009           00882         MOVLW   D'9'
+0284   00E3           00883         MOVWF   ResultThoT              ; and store result
+0285   3009           00884         MOVLW   D'9'
+0286   00E4           00885         MOVWF   ResultHunT              ; and store result
+0287   0845           00886         MOVF    TempTen,W
+0288   3E0A           00887         ADDLW   D'10'
+0289   00B5           00888         MOVWF   Temp
+028A   0855           00889         MOVF    Num2Ten,W               ; get first number
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 21
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+028B   0235           00890         SUBWF   Temp,W          ; subtract second
+028C   00E5           00891         MOVWF   ResultTenT              ; and store result
+                      00892         
+028D                  00893 subUnitDiv:
+028D   1403           00894         BSF             STATUS,C                ; Negative detect flag          
+028E   0856           00895         MOVF    Num2Unit,W              ; get first number
+028F   0246           00896         SUBWF   TempUnit,W              ; subtract second
+0290   00E6           00897         MOVWF   ResultUnitT             ; and store 
+                      00898 
+0291   1C03           00899         BTFSS   STATUS,C                ; answer negative?
+0292   2???           00900         GOTO    takeFromTenDiv          ; yes, minus result
+0293   2???           00901         GOTO    subDoneDiv
+                      00902 
+0294                  00903 takeFromTenDiv:
+0294   0865           00904         MOVF    ResultTenT,W            ; 
+0295   1903           00905         BTFSC   STATUS,Z                        ; check if Z
+0296   2???           00906         GOTO    takeFromHun2Div
+Message[305]: Using default destination of 1 (file).
+0297   03E5           00907         DECF    ResultTenT
+0298   0846           00908         MOVF    TempUnit,W
+0299   3E0A           00909         ADDLW   D'10'
+029A   00B5           00910         MOVWF   Temp
+029B   0856           00911         MOVF    Num2Unit,W                      ; get first number
+029C   0235           00912         SUBWF   Temp,W                          ; subtract second
+029D   00E6           00913         MOVWF   ResultUnitT                     ; and store result
+029E   2???           00914         GOTO    subDoneDiv
+                      00915         
+029F                  00916 takeFromHun2Div:
+029F   0864           00917         MOVF    ResultHunT,W            ; 
+02A0   1903           00918         BTFSC   STATUS,Z                ; check if Z
+02A1   2???           00919         GOTO    takeFromTho3Div
+Message[305]: Using default destination of 1 (file).
+02A2   03E4           00920         DECF    ResultHunT
+02A3   3009           00921         MOVLW   D'9'
+02A4   00E5           00922         MOVWF   ResultTenT      
+02A5   0846           00923         MOVF    TempUnit,W
+02A6   3E0A           00924         ADDLW   D'10'
+02A7   00B5           00925         MOVWF   Temp
+02A8   0856           00926         MOVF    Num2Unit,W              ; get first number
+02A9   0235           00927         SUBWF   Temp,W                  ; subtract second
+02AA   00E6           00928         MOVWF   ResultUnitT             ; and store result
+02AB   2???           00929         GOTO    subDoneDiv
+                      00930         
+02AC                  00931 takeFromTho3Div:
+02AC   0863           00932         MOVF    ResultThoT,W            ; 
+02AD   1903           00933         BTFSC   STATUS,Z                ; check if Z
+02AE   2???           00934         GOTO    takeFromTenTho4Div
+Message[305]: Using default destination of 1 (file).
+02AF   03E3           00935         DECF    ResultThoT
+02B0   3009           00936         MOVLW   D'9'
+02B1   00E4           00937         MOVWF   ResultHunT
+02B2   3009           00938         MOVLW   D'9'
+02B3   00E5           00939         MOVWF   ResultTenT
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 22
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00940         
+02B4   0846           00941     MOVF        TempUnit,W
+02B5   3E0A           00942         ADDLW   D'10'
+02B6   00B5           00943         MOVWF   Temp
+02B7   0856           00944         MOVF    Num2Unit,W              ; get first number
+02B8   0235           00945         SUBWF   Temp,W          ; subtract second
+02B9   00E6           00946         MOVWF   ResultUnitT             ; and store result
+02BA   2???           00947         GOTO    subDoneDiv
+                      00948 
+02BB                  00949 takeFromTenTho4Div:
+02BB   0862           00950         MOVF    ResultTenThoT,W         ; 
+02BC   1903           00951         BTFSC   STATUS,Z        ; check if Z
+02BD   2???           00952         GOTO    exitDiv
+Message[305]: Using default destination of 1 (file).
+02BE   03E2           00953         DECF    ResultTenThoT
+02BF   3009           00954         MOVLW   D'9'
+02C0   00E3           00955         MOVWF   ResultThoT              ; and store result
+02C1   3009           00956         MOVLW   D'9'
+02C2   00E4           00957         MOVWF   ResultHunT              ; and store result
+02C3   3009           00958         MOVLW   D'9'
+02C4   00E5           00959         MOVWF   ResultTenT              ; and store result      
+02C5   0846           00960         MOVF    TempUnit,W
+02C6   3E0A           00961         ADDLW   D'10'
+02C7   00B5           00962         MOVWF   Temp
+02C8   0856           00963         MOVF    Num2Unit,W              ; get first number
+02C9   0235           00964         SUBWF   Temp,W          ; subtract second
+02CA   00E6           00965         MOVWF   ResultUnitT             ; and store result
+                      00966         
+02CB                  00967 subDoneDiv:
+02CB   0866           00968         MOVF    ResultUnitT,W
+02CC   00C6           00969         MOVWF   TempUnit
+02CD   0865           00970         MOVF    ResultTenT,W
+02CE   00C5           00971         MOVWF   TempTen
+02CF   0864           00972         MOVF    ResultHunT,W
+02D0   00C4           00973         MOVWF   TempHun
+02D1   0863           00974         MOVF    ResultThoT,W
+02D2   00C3           00975         MOVWF   TempTho
+02D3   0862           00976         MOVF    ResultTenThoT,W
+02D4   00C2           00977         MOVWF   TempTenTho
+                      00978         
+                      00979 
+Message[305]: Using default destination of 1 (file).
+02D5   0AC1           00980         INCF    ResultUnit
+02D6   1403           00981         BSF             STATUS,C                        ; Negative detect flag
+02D7   300A           00982         MOVLW   D'10'
+02D8   0241           00983         SUBWF   ResultUnit,W
+02D9   1C03           00984         BTFSS   STATUS,C                ; answer positive?
+02DA   2???           00985         GOTO    DivLoop
+02DB   2???           00986         GOTO    addTenDiv
+                      00987         
+                      00988 
+02DC                  00989 addTenDiv:
+02DC   00C1           00990         MOVWF   ResultUnit
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 23
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Message[305]: Using default destination of 1 (file).
+02DD   0AC0           00991         INCF    ResultTen
+02DE   1403           00992         BSF             STATUS,C                        ; Negative detect flag
+02DF   300A           00993         MOVLW   D'10'
+02E0   0240           00994         SUBWF   ResultTen,W
+02E1   1C03           00995         BTFSS   STATUS,C                ; answer positive?
+02E2   2???           00996         GOTO    DivLoop
+02E3   2???           00997         GOTO    addHunDiv
+                      00998 
+                      00999 
+02E4                  01000 addHunDiv:
+02E4   00C0           01001         MOVWF   ResultTen
+Message[305]: Using default destination of 1 (file).
+02E5   0AB9           01002         INCF    ResultHun
+02E6   1403           01003         BSF             STATUS,C                        ; Negative detect flag
+02E7   300A           01004         MOVLW   D'10'
+02E8   0239           01005         SUBWF   ResultHun,W
+02E9   1C03           01006         BTFSS   STATUS,C                ; answer positive?
+02EA   2???           01007         GOTO    DivLoop
+02EB   2???           01008         GOTO    addThoDiv
+                      01009 
+                      01010 
+02EC                  01011 addThoDiv:
+02EC   00B9           01012         MOVWF   ResultHun
+Message[305]: Using default destination of 1 (file).
+02ED   0AB8           01013         INCF    ResultTho
+02EE   1403           01014         BSF             STATUS,C                        ; Negative detect flag
+02EF   300A           01015         MOVLW   D'10'
+02F0   0238           01016         SUBWF   ResultTho,W
+02F1   1C03           01017         BTFSS   STATUS,C                ; answer positive?
+02F2   2???           01018         GOTO    DivLoop
+02F3   2???           01019         GOTO    addTenThoDiv
+                      01020 
+                      01021 
+02F4                  01022 addTenThoDiv:
+02F4   00B8           01023         MOVWF   ResultTho
+Message[305]: Using default destination of 1 (file).
+02F5   0AB7           01024         INCF    ResultTenTho
+02F6   2???           01025         GOTO    DivLoop
+                      01026 
+02F7                  01027 exitDiv:
+02F7   2???           01028         GOTO continue
+                      01029         
+                      01030 
+                      01031         
+                      01032    ;;;;;;;;;;;;;;;;;;;;;;;Modulation Calculation ;;;;;;;;;;;;;;;;;;;    
+02F8                  01033 modcalc:
+02F8   0851           01034         MOVF    Num1Unit,W
+02F9   00C6           01035         MOVWF   TempUnit
+02FA   0850           01036         MOVF    Num1Ten,W
+02FB   00C5           01037         MOVWF   TempTen
+02FC   0849           01038         MOVF    Num1Hun,W
+02FD   00C4           01039         MOVWF   TempHun
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 24
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+02FE   0848           01040         MOVF    Num1Tho,W
+02FF   00C3           01041         MOVWF   TempTho
+0300   0847           01042         MOVF    Num1TenTho,W
+0301   00C2           01043         MOVWF   TempTenTho
+                      01044         
+0302                  01045 ModLoop:
+                      01046         
+0302   1403           01047         BSF     STATUS,C        ; Negative detect flag  
+0303   0852           01048         MOVF    Num2TenTho,W            ; get first number
+0304   0242           01049         SUBWF   TempTenTho,W            ; subtract second
+0305   00B7           01050         MOVWF   ResultTenTho            ; and store result
+0306   1C03           01051         BTFSS   STATUS,C        ; answer negative?
+0307   2???           01052         GOTO    exit            ; yes, minus result
+                      01053 
+0308   1403           01054         BSF     STATUS,C        ; Negative detect flag          
+0309   0853           01055         MOVF    Num2Tho,W               ; get first number
+030A   0243           01056         SUBWF   TempTho,W               ; subtract second
+030B   00B8           01057         MOVWF   ResultTho               ; and store result
+030C   1C03           01058         BTFSS   STATUS,C        ; answer negative?
+030D   2???           01059         GOTO    takeFromTenTho          ; yes, minus result
+030E   2???           01060         GOTO    subHun
+                      01061 
+030F                  01062 takeFromTenTho:
+030F   0837           01063         MOVF    ResultTenTho,W          ; 
+0310   1903           01064         BTFSC   STATUS,Z        ; check if Z
+0311   2???           01065         GOTO    exit
+Message[305]: Using default destination of 1 (file).
+0312   03B7           01066         DECF  ResultTenTho
+0313   0843           01067         MOVF    TempTho,W
+0314   3E0A           01068         ADDLW   D'10'
+0315   00B5           01069         MOVWF   Temp
+0316   0853           01070         MOVF    Num2Tho,W               ; get first number
+0317   0235           01071         SUBWF   Temp,W          ; subtract second
+0318   00B8           01072         MOVWF   ResultTho               ; and store result
+                      01073         
+0319                  01074 subHun:
+0319   1403           01075         BSF     STATUS,C        ; Negative detect flag          
+031A   0854           01076         MOVF    Num2Hun,W               ; get first number
+031B   0244           01077         SUBWF   TempHun,W               ; subtract second
+031C   00B9           01078         MOVWF   ResultHun               ; and store result
+031D   1C03           01079         BTFSS   STATUS,C        ; answer negative?
+031E   2???           01080         GOTO    takeFromTho             ; yes, minus result
+031F   2???           01081         GOTO    subTen
+                      01082         
+0320                  01083 takeFromTho:
+0320   0838           01084         MOVF    ResultTho,W             ; 
+0321   1903           01085         BTFSC   STATUS,Z        ; check if Z
+0322   2???           01086         GOTO    takeFromTenTho2
+Message[305]: Using default destination of 1 (file).
+0323   03B8           01087         DECF  ResultTho
+0324   0844           01088         MOVF    TempHun,W
+0325   3E0A           01089         ADDLW   D'10'
+0326   00B5           01090         MOVWF   Temp
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 25
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0327   0854           01091         MOVF    Num2Hun,W               ; get first number
+0328   0235           01092         SUBWF   Temp,W          ; subtract second
+0329   00B9           01093         MOVWF   ResultHun               ; and store result
+032A   2???           01094         GOTO    subTen
+                      01095 
+032B                  01096 takeFromTenTho2:
+032B   0837           01097         MOVF    ResultTenTho,W          ; 
+032C   1903           01098         BTFSC   STATUS,Z        ; check if Z
+032D   2???           01099         GOTO    exit
+Message[305]: Using default destination of 1 (file).
+032E   03B7           01100         DECF  ResultTenTho
+032F   3009           01101         MOVLW   D'9'
+0330   00B8           01102         MOVWF   ResultTho               ; and store result
+0331   0844           01103         MOVF    TempHun,W
+0332   3E0A           01104         ADDLW   D'10'
+0333   00B5           01105         MOVWF   Temp
+0334   0854           01106         MOVF    Num2Hun,W               ; get first number
+0335   0235           01107         SUBWF   Temp,W          ; subtract second
+0336   00B9           01108         MOVWF   ResultHun               ; and store result
+                      01109         
+0337                  01110 subTen: 
+0337   1403           01111         BSF     STATUS,C        ; Negative detect flag          
+0338   0855           01112         MOVF    Num2Ten,W               ; get first number
+0339   0245           01113         SUBWF   TempTen,W               ; subtract second
+033A   00C0           01114         MOVWF   ResultTen               ; and store result
+                      01115 
+033B   1C03           01116         BTFSS   STATUS,C        ; answer negative?
+033C   2???           01117         GOTO    takeFromHun             ; yes, minus result
+033D   2???           01118         GOTO    subUnit
+                      01119 
+033E                  01120 takeFromHun:
+033E   0839           01121         MOVF    ResultHun,W             ; 
+033F   1903           01122         BTFSC   STATUS,Z        ; check if Z
+0340   2???           01123         GOTO    takeFromTho2
+Message[305]: Using default destination of 1 (file).
+0341   03B9           01124         DECF  ResultHun
+0342   0845           01125         MOVF    TempTen,W
+0343   3E0A           01126         ADDLW   D'10'
+0344   00B5           01127         MOVWF   Temp
+0345   0855           01128         MOVF    Num2Ten,W               ; get first number
+0346   0235           01129         SUBWF   Temp,W          ; subtract second
+0347   00C0           01130         MOVWF   ResultTen               ; and store result
+0348   2???           01131         GOTO    subUnit
+                      01132         
+0349                  01133 takeFromTho2:
+0349   0838           01134         MOVF    ResultTho,W             ; 
+034A   1903           01135         BTFSC   STATUS,Z        ; check if Z
+034B   2???           01136         GOTO    takeFromTenTho3
+Message[305]: Using default destination of 1 (file).
+034C   03B8           01137         DECF  ResultTho
+034D   3009           01138           MOVLW D'9'
+034E   00B9           01139         MOVWF   ResultHun
+034F   0845           01140         MOVF    TempTen,W
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 26
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0350   3E0A           01141         ADDLW   D'10'
+0351   00B5           01142         MOVWF   Temp
+0352   0855           01143         MOVF    Num2Ten,W               ; get first number
+0353   0235           01144         SUBWF   Temp,W          ; subtract second
+0354   00C0           01145         MOVWF   ResultTen               ; and store result
+0355   2???           01146         GOTO    subUnit
+                      01147 
+0356                  01148 takeFromTenTho3:
+0356   0837           01149         MOVF    ResultTenTho,W          ; 
+0357   1903           01150         BTFSC   STATUS,Z        ; check if Z
+0358   2???           01151         GOTO    exit
+Message[305]: Using default destination of 1 (file).
+0359   03B7           01152         DECF  ResultTenTho
+035A   3009           01153         MOVLW   D'9'
+035B   00B8           01154         MOVWF   ResultTho               ; and store result
+035C   3009           01155         MOVLW   D'9'
+035D   00B9           01156         MOVWF   ResultHun               ; and store result
+035E   0845           01157         MOVF    TempTen,W
+035F   3E0A           01158         ADDLW   D'10'
+0360   00B5           01159         MOVWF   Temp
+0361   0855           01160         MOVF    Num2Ten,W               ; get first number
+0362   0235           01161         SUBWF   Temp,W          ; subtract second
+0363   00C0           01162         MOVWF   ResultTen               ; and store result
+                      01163         
+0364                  01164 subUnit:
+0364   1403           01165         BSF     STATUS,C        ; Negative detect flag          
+0365   0856           01166         MOVF    Num2Unit,W              ; get first number
+0366   0246           01167         SUBWF   TempUnit,W              ; subtract second
+0367   00C1           01168         MOVWF   ResultUnit              ; and store 
+                      01169 
+0368   1C03           01170         BTFSS   STATUS,C        ; answer negative?
+0369   2???           01171         GOTO    takeFromTen             ; yes, minus result
+036A   2???           01172         GOTO    subDone
+                      01173 
+036B                  01174 takeFromTen:
+036B   0840           01175         MOVF    ResultTen,W             ; 
+036C   1903           01176         BTFSC   STATUS,Z        ; check if Z
+036D   2???           01177         GOTO    takeFromHun2
+Message[305]: Using default destination of 1 (file).
+036E   03C0           01178         DECF  ResultTen
+036F   0846           01179         MOVF    TempUnit,W
+0370   3E0A           01180         ADDLW   D'10'
+0371   00B5           01181         MOVWF   Temp
+0372   0856           01182         MOVF    Num2Unit,W              ; get first number
+0373   0235           01183         SUBWF   Temp,W          ; subtract second
+0374   00C1           01184         MOVWF   ResultUnit              ; and store result
+0375   2???           01185         GOTO    subDone
+                      01186         
+0376                  01187 takeFromHun2:
+0376   0839           01188         MOVF    ResultHun,W             ; 
+0377   1903           01189         BTFSC   STATUS,Z        ; check if Z
+0378   2???           01190         GOTO    takeFromTho3
+Message[305]: Using default destination of 1 (file).
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 27
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0379   03B9           01191         DECF  ResultHun
+037A   3009           01192         MOVLW   D'9'
+037B   00C0           01193         MOVWF   ResultTen       
+037C   0846           01194         MOVF    TempUnit,W
+037D   3E0A           01195         ADDLW   D'10'
+037E   00B5           01196         MOVWF   Temp
+037F   0856           01197         MOVF    Num2Unit,W              ; get first number
+0380   0235           01198         SUBWF   Temp,W          ; subtract second
+0381   00C1           01199         MOVWF   ResultUnit              ; and store result
+0382   2???           01200         GOTO    subDone
+                      01201         
+0383                  01202 takeFromTho3:
+0383   0838           01203         MOVF    ResultTho,W             ; 
+0384   1903           01204         BTFSC   STATUS,Z        ; check if Z
+0385   2???           01205         GOTO    takeFromTenTho4
+Message[305]: Using default destination of 1 (file).
+0386   03B8           01206         DECF  ResultTho
+0387   3009           01207         MOVLW   D'9'
+0388   00B9           01208         MOVWF   ResultHun
+0389   3009           01209         MOVLW   D'9'
+038A   00C0           01210         MOVWF   ResultTen
+                      01211         
+038B   0846           01212         MOVF    TempUnit,W
+038C   3E0A           01213         ADDLW   D'10'
+038D   00B5           01214         MOVWF   Temp
+038E   0856           01215         MOVF    Num2Unit,W              ; get first number
+038F   0235           01216         SUBWF   Temp,W          ; subtract second
+0390   00C1           01217         MOVWF   ResultUnit              ; and store result
+0391   2???           01218         GOTO    subDone
+                      01219 
+0392                  01220 takeFromTenTho4:
+0392   0837           01221         MOVF    ResultTenTho,W          ; 
+0393   1903           01222         BTFSC   STATUS,Z        ; check if Z
+0394   2???           01223         GOTO    exit
+Message[305]: Using default destination of 1 (file).
+0395   03B7           01224         DECF  ResultTenTho
+0396   3009           01225         MOVLW   D'9'
+0397   00B8           01226         MOVWF   ResultTho               ; and store result
+0398   3009           01227         MOVLW   D'9'
+0399   00B9           01228         MOVWF   ResultHun               ; and store result
+039A   3009           01229         MOVLW   D'9'
+039B   00C0           01230         MOVWF   ResultTen               ; and store result      
+039C   0846           01231         MOVF    TempUnit,W
+039D   3E0A           01232         ADDLW   D'10'
+039E   00B5           01233         MOVWF   Temp
+039F   0856           01234         MOVF    Num2Unit,W              ; get first number
+03A0   0235           01235         SUBWF   Temp,W          ; subtract second
+03A1   00C1           01236         MOVWF   ResultUnit              ; and store result
+                      01237         
+03A2                  01238 subDone:
+03A2   0841           01239         MOVF    ResultUnit,W
+03A3   00C6           01240         MOVWF   TempUnit
+03A4   0840           01241         MOVF    ResultTen,W
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 28
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+03A5   00C5           01242         MOVWF   TempTen
+03A6   0839           01243         MOVF    ResultHun,W
+03A7   00C4           01244         MOVWF   TempHun
+03A8   0838           01245         MOVF    ResultTho,W
+03A9   00C3           01246         MOVWF   TempTho
+03AA   0837           01247         MOVF    ResultTenTho,W
+03AB   00C2           01248         MOVWF   TempTenTho
+03AC   2???           01249    GOTO ModLoop
+                      01250         
+03AD                  01251 exit:
+03AD   0846           01252         MOVF    TempUnit,W
+03AE   00C1           01253         MOVWF   ResultUnit
+03AF   0845           01254         MOVF    TempTen,W
+03B0   00C0           01255         MOVWF   ResultTen
+03B1   0844           01256         MOVF    TempHun,W
+03B2   00B9           01257         MOVWF   ResultHun
+03B3   0843           01258         MOVF    TempTho,W
+03B4   00B8           01259         MOVWF   ResultTho
+03B5   0842           01260         MOVF    TempTenTho,W
+03B6   00B7           01261         MOVWF   ResultTenTho
+03B7   2???           01262         GOTO continue
+                      01263  
+03B8                  01264 askKeep:
+03B8   3002           01265         MOVLW   0x02
+03B9   00D8           01266         MOVWF resultFlag
+Warning[203]: Found opcode in column 1. (INCF)
+Message[305]: Using default destination of 1 (file).
+03BA   0AD7           01267 INCF cursor
+03BB   01D9           01268         CLRF timer0OverflowCounter
+03BC   1283 1303      01269                 BANKSEL TMR0
+03BE   0181           01270                 CLRF TMR0
+                      01271                 
+03BF   1283 1303      01272                 BANKSEL INTCON
+03C1   168B           01273                 BSF INTCON, TMR0IE
+                      01274 
+03C2   2???           01275         GOTO continue
+                      01276         
+03C3                  01277 state11:
+Message[305]: Using default destination of 1 (file).
+03C3   0AE8           01278         INCF keepPushCounter
+03C4   2???           01279         GOTO continue
+                      01280 
+03C5                  01281 restart:
+03C5   3000           01282         MOVLW   0x00
+03C6   00D8           01283         MOVWF resultFlag
+03C7   00E7           01284         MOVWF divFlag
+03C8   01D9           01285         CLRF timer0OverflowCounter
+03C9   01E8           01286         CLRF keepPushCounter
+03CA   01E0           01287     CLRF carryReg
+03CB   1283 1303      01288         BANKSEL TMR0
+03CD   0181           01289         CLRF TMR0
+                      01290                 
+03CE   1283 1303      01291         BANKSEL INTCON
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 29
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+03D0   168B           01292         BSF INTCON, TMR0IE
+                      01293 
+03D1   0868           01294                 MOVF    keepPushCounter,W               ; check 
+03D2   00B5           01295                 MOVWF   Temp
+03D3   3001           01296                 MOVLW   01
+Message[305]: Using default destination of 1 (file).
+03D4   02B5           01297                 SUBWF   Temp
+03D5   1903           01298                 BTFSC   STATUS,Z
+03D6   2???           01299                 GOTO restaetWithoutClear
+03D7   2???           01300                 GOTO restaetWithClear
+                      01301 
+03D8                  01302 restaetWithoutClear:
+03D8   3005           01303         MOVLW   0x05
+03D9   00D7           01304         MOVWF cursor
+03DA   2???           01305         GOTO continue
+                      01306 
+03DB                  01307 restaetWithClear:
+03DB   3000           01308         MOVLW   0x00
+03DC   00D7           01309         MOVWF cursor
+03DD   2???           01310         GOTO continue
+                      01311 
+Warning[207]: Found label after column 1. (continue)
+03DE                  01312         continue:
+03DE   01D9           01313                 CLRF timer0OverflowCounter
+03DF   1283 1303      01314                 BANKSEL TMR0
+03E1   0181           01315                 CLRF TMR0
+03E2   1283 1303      01316                 BANKSEL INTCON
+03E4   160B           01317                 BSF INTCON, INTE        
+                      01318         
+Warning[207]: Found label after column 1. (EndISR)
+03E5                  01319         EndISR:
+03E5   1283 1303      01320                 BANKSEL PORTD
+03E7   0009           01321                 retfie
+                      01322         
+                      01323         
+                      01324 ;;;;;;;;;;;Init the project;;;;;;;;
+Warning[207]: Found label after column 1. (init)
+03E8                  01325         init:
+                      01326         
+03E8   01D9           01327                 CLRF timer0OverflowCounter
+03E9   01D8           01328                 CLRF resultFlag
+                      01329         
+03EA   1683 1303      01330                 BANKSEL TRISB
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+03EC   1406           01331                 BSF TRISB, TRISB0
+                      01332         
+03ED   1683 1303      01333                 BANKSEL TRISD           ; Select bank D
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+03EF   0188           01334                 CLRF    TRISD           ; Display port is output
+                      01335         
+03F0   1283 1303      01336                 BANKSEL INTCON 
+                      01337         
+03F2   178B           01338                 BSF INTCON, GIE
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 30
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+03F3   160B           01339                 BSF INTCON, INTE
+03F4   168B           01340                 BSF INTCON, TMR0IE 
+                      01341                 
+03F5   1683 1303      01342                 BANKSEL OPTION_REG
+03F7   3007           01343                 MOVLW b'00000111'
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+03F8   0081           01344                 MOVWF OPTION_REG
+                      01345         
+03F9   2???           01346                 GOTO    start           ; Jump to main program
+                      01347         
+                      01348         
+                      01349         INCLUDE "LCDIS.INC"
+                      00001 ;--------------------------------------------------------------
+                      00002 ;       LCDIS.INC               MPB     19-12-05
+                      00003 ;
+                      00004 ;       Include file to operate 16x2 LCD display
+                      00005 ;       Uses GPR 70 - 75
+                      00006 ;       
+                      00007 ;       Final version
+                      00008 ;--------------------------------------------------------------
+                      00009 
+  00000070            00010 Timer1  EQU     70              ; 1ms count register
+  00000071            00011 TimerX  EQU     71              ; Xms count register
+  00000072            00012 Var     EQU     72              ; Output variable
+  00000073            00013 Point   EQU     73              ; Program table pointer
+  00000074            00014 Select  EQU     74              ; Used to set or clear RS bit
+  00000075            00015 OutCod  EQU     75              ; Temp store for output code
+                      00016 
+  00000001            00017 RS      EQU     1               ; Register select output bit
+  00000002            00018 E       EQU     2               ; Enable display input
+                      00019 
+                      00020 
+                      00021 ;--------------------------------------------------------------
+                      00022 ;       1ms delay with 1us cycle time (1000 cycles)
+                      00023 ;--------------------------------------------------------------
+03FA   30F9           00024 onems   MOVLW   D'249'          ; Count for 1ms delay 
+03FB   00F0           00025         MOVWF   Timer1          ; Load count
+03FC   0000           00026 loop1   NOP                     ; Pad for 4 cycle loop
+Message[305]: Using default destination of 1 (file).
+03FD   0BF0           00027         DECFSZ  Timer1          ; Count
+03FE   2???           00028         GOTO    loop1           ; until Z
+03FF   0008           00029         RETURN                  ; and finish
+                      00030 
+                      00031 ;--------------------------------------------------------------
+                      00032 ;       Delay Xms
+                      00033 ;       Receives count in W, uses Onems
+                      00034 ;--------------------------------------------------------------
+0400   00F1           00035 xms     MOVWF   TimerX          ; Count for X ms
+0401   2???           00036 loopX   CALL    onems           ; Delay 1ms
+Message[305]: Using default destination of 1 (file).
+0402   0BF1           00037         DECFSZ  TimerX          ; Repeat X times 
+0403   2???           00038         GOTO    loopX           ; until Z
+0404   0008           00039         RETURN                  ; and finish
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 31
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00040 
+                      00041 ;--------------------------------------------------------------
+                      00042 ;       Generate data/command clock siganl E
+                      00043 ;--------------------------------------------------------------
+0405   1508           00044 pulseE  BSF     PORTD,E         ; Set E high
+0406   2???           00045         CALL    onems           ; Delay 1ms
+0407   1108           00046         BCF     PORTD,E         ; Reset E low
+0408   2???           00047         CALL    onems           ; Delay 1ms
+0409   0008           00048         RETURN                  ; done
+                      00049 
+                      00050 ;--------------------------------------------------------------
+                      00051 ;       Send a command byte in two nibbles from RB4 - RB7
+                      00052 ;       Receives command in W, uses PulseE and Onems
+                      00053 ;--------------------------------------------------------------
+040A   00F5           00054 send    MOVWF   OutCod          ; Store output code
+040B   39F0           00055         ANDLW   0F0             ; Clear low nybble
+040C   0088           00056         MOVWF   PORTD           ; Output high nybble
+040D   18F4           00057         BTFSC   Select,RS       ; Test RS bit
+040E   1488           00058         BSF     PORTD,RS        ; and set for data
+040F   2???           00059         CALL    pulseE          ; and clock display register
+0410   2???           00060         CALL    onems           ; wait 1ms for display
+                      00061 
+Message[305]: Using default destination of 1 (file).
+0411   0EF5           00062         SWAPF   OutCod          ; Swap low and high nybbles 
+0412   0875           00063         MOVF    OutCod,W        ; Retrieve output code
+0413   39F0           00064         ANDLW   0F0             ; Clear low nybble
+0414   0088           00065         MOVWF   PORTD           ; Output low nybble
+0415   18F4           00066         BTFSC   Select,RS       ; Test RS bit
+0416   1488           00067         BSF     PORTD,RS        ; and set for data
+0417   2???           00068         CALL    pulseE          ; and clock display register
+0418   2???           00069         CALL    onems           ; wait 1ms for display
+0419   0008           00070         RETURN                  ; done
+                      00071 
+                      00072 ;--------------------------------------------------------------
+                      00073 ;       Initialise the display
+                      00074 ;       Uses Send
+                      00075 ;--------------------------------------------------------------
+041A   3064           00076 inid    MOVLW   D'100'          ; Load count for 100ms delay
+041B   2???           00077         CALL    xms             ; and wait for display start
+041C   30F0           00078         MOVLW   0F0             ; Mask for select code
+041D   00F4           00079         MOVWF   Select          ; High nybble not masked
+                      00080 
+041E   3030           00081         MOVLW   0x30            ; Load initial nibble
+041F   0088           00082         MOVWF   PORTD           ; and output it to display
+0420   2???           00083         CALL    pulseE          ; Latch initial code
+0421   3005           00084         MOVLW   D'5'            ; Set delay 5ms
+0422   2???           00085         CALL    xms             ; and wait
+0423   2???           00086         CALL    pulseE          ; Latch initial code again
+0424   2???           00087         CALL    onems           ; Wait 1ms
+0425   2???           00088         CALL    pulseE          ; Latch initial code again
+0426   1208           00089         BCF     PORTD,4         ; Set 4-bit mode
+0427   2???           00090         CALL    pulseE          ; Latch it
+                      00091         
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 32
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0428   3028           00092         MOVLW   0x28            ; Set 4-bit mode, 2 lines
+0429   2???           00093         CALL    send            ; and send code
+042A   3008           00094         MOVLW   0x08            ; Switch off display
+042B   2???           00095         CALL    send            ; and send code
+042C   3001           00096         MOVLW   0x01            ; Code to clear display
+042D   2???           00097         CALL    send            ; and send code
+042E   3006           00098         MOVLW   0x06            ; Enable cursor auto inc  
+042F   2???           00099         CALL    send            ; and send code
+0430   3080           00100         MOVLW   0x80            ; Zero display address
+0431   2???           00101         CALL    send            ; and send code
+0432   300C           00102         MOVLW   0x0C            ; Turn on display  
+0433   2???           00103         CALL    send            ; and send code
+                      00104 
+0434   0008           00105         RETURN                  ; Done
+                      00106 
+                      00107 ;--------------------------------------------------------------
+                      01350         
+                      01351         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      01352         ;Things need to be done before looping in main
+Warning[207]: Found label after column 1. (start)
+0435                  01353         start 
+0435   2???           01354                 CALL    inid            ; Initialise the display
+0436   3080           01355                 MOVLW   0x80            ; position to home cursor
+0437   10F4           01356                 BCF     Select,RS       ; Select command mode
+0438   2???           01357                 CALL    send            ; and send code
+                      01358         
+Warning[211]: Extraneous arguments on the line.
+0439   0103           01359                 CLRW    DFlag           ; Digit flags = 
+                      01360                 
+043A   01C7           01361                 CLRF Num1TenTho
+043B   01C8           01362                 CLRF Num1Tho
+043C   01C9           01363                 CLRF Num1Hun
+043D   01D0           01364                 CLRF Num1Ten
+043E   01D1           01365                 CLRF Num1Unit
+                      01366         
+Warning[211]: Extraneous arguments on the line.
+043F   0103           01367                 CLRW Num2TenTho
+Warning[211]: Extraneous arguments on the line.
+0440   0103           01368                 CLRW Num2Tho
+Warning[211]: Extraneous arguments on the line.
+0441   0103           01369                 CLRW Num2Hun
+Warning[211]: Extraneous arguments on the line.
+0442   0103           01370                 CLRW Num2Ten
+Warning[211]: Extraneous arguments on the line.
+0443   0103           01371                 CLRW Num2Unit
+0444   302B           01372                 movlW '+'
+0445   00B4           01373                 MOVWF   Oper
+                      01374                 
+0446   3000           01375                 movlW 00
+0447   00D7           01376                 MOVWF   cursor
+                      01377         
+                      01378                 
+0448   1283 1303      01379         BANKSEL PORTD ; Bank 0 
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 33
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      01380         
+Warning[207]: Found label after column 1. (printOperation)
+044A                  01381         printOperation:
+044A   0858           01382                 MOVF    resultFlag,W            ; check 
+044B   00B5           01383                 MOVWF   Temp
+044C   3001           01384                 MOVLW   01
+Message[305]: Using default destination of 1 (file).
+044D   02B5           01385                 SUBWF   Temp
+044E   1903           01386                 BTFSC   STATUS,Z
+044F   2???           01387                 GOTO printResult
+                      01388 
+0450   0858           01389                 MOVF    resultFlag,W            ; check 
+0451   00B5           01390                 MOVWF   Temp
+0452   3002           01391                 MOVLW   02
+Message[305]: Using default destination of 1 (file).
+0453   02B5           01392                 SUBWF   Temp
+0454   1903           01393                 BTFSC   STATUS,Z
+0455   2???           01394                 GOTO printKeep
+                      01395 
+0456   2???           01396                 GOTO printInput
+                      01397         
+Warning[207]: Found label after column 1. (printInput)
+0457                  01398         printInput:
+0457   3080           01399                 MOVLW   0x80            ; position to home cursor
+0458   10F4           01400                 BCF     Select,RS       ; Select command mode
+0459   2???           01401                 CALL    send            ; and send code
+                      01402         ;Sending DATA "Enter Operation" Message 
+045A   3045           01403                 movlW A'E' 
+045B   14F4           01404                 BSF     Select,RS       ; Select data mode
+045C   2???           01405                 CALL    send            ; and send code
+                      01406         
+045D   304E           01407                 movlW A'N' 
+045E   14F4           01408                 BSF     Select,RS       ; Select data mode
+045F   2???           01409                 CALL    send            ; and send code
+0460   3054           01410                 movlW A'T' 
+0461   14F4           01411                 BSF     Select,RS       ; Select data mode
+0462   2???           01412                 CALL    send            ; and send code
+0463   3045           01413                 movlW A'E' 
+0464   14F4           01414                 BSF     Select,RS       ; Select data mode
+0465   2???           01415                 CALL    send            ; and send code
+0466   3052           01416                 movlW A'R' 
+0467   14F4           01417                 BSF     Select,RS       ; Select data mode
+0468   2???           01418                 CALL    send            ; and send code
+0469   3020           01419                 movlW A' ' 
+046A   14F4           01420                 BSF     Select,RS       ; Select data mode
+046B   2???           01421                 CALL    send            ; and send code
+046C   304F           01422                 movlW A'O' 
+046D   14F4           01423                 BSF     Select,RS       ; Select data mode
+046E   2???           01424                 CALL    send            ; and send code
+046F   3050           01425                 movlW A'P' 
+0470   14F4           01426                 BSF     Select,RS       ; Select data mode
+0471   2???           01427                 CALL    send            ; and send code
+0472   3045           01428                 movlW A'E' 
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 34
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0473   14F4           01429                 BSF     Select,RS       ; Select data mode
+0474   2???           01430                 CALL    send            ; and send code
+0475   3052           01431                 movlW A'R' 
+0476   14F4           01432                 BSF     Select,RS       ; Select data mode
+0477   2???           01433                 CALL    send            ; and send code
+0478   3041           01434                 movlW A'A' 
+0479   14F4           01435                 BSF     Select,RS       ; Select data mode
+047A   2???           01436                 CALL    send            ; and send code
+047B   3054           01437                 movlW A'T' 
+047C   14F4           01438                 BSF     Select,RS       ; Select data mode
+047D   2???           01439                 CALL    send            ; and send code
+047E   3049           01440                 movlW A'I' 
+047F   14F4           01441                 BSF     Select,RS       ; Select data mode
+0480   2???           01442                 CALL    send            ; and send code
+0481   304F           01443                 movlW A'O' 
+0482   14F4           01444                 BSF     Select,RS       ; Select data mode
+0483   2???           01445                 CALL    send            ; and send code
+0484   304E           01446                 movlW A'N' 
+0485   14F4           01447                 BSF     Select,RS       ; Select data mode
+0486   2???           01448                 CALL    send            ; and send code
+                      01449         
+                      01450         
+0487   30C0           01451                 MOVLW   0xC0            ; Move the cursor to beginning of Second Line
+0488   10F4           01452                 BCF     Select,RS       ; Select command mode
+0489   2???           01453                 CALL    send            ; and send code
+                      01454         
+048A   0847           01455                 MOVF    Num1TenTho,W 
+048B   3E30           01456                 ADDLW   030     
+048C   14F4           01457                 BSF     Select,RS       ; Select data mode
+048D   2???           01458                 CALL    send            ; and send code
+048E   0848           01459                 MOVF    Num1Tho,W 
+048F   3E30           01460                 ADDLW   030     
+0490   14F4           01461                 BSF     Select,RS       ; Select data mode
+0491   2???           01462                 CALL    send            ; and send code
+0492   0849           01463                 MOVF    Num1Hun,W 
+0493   3E30           01464                 ADDLW   030     
+0494   14F4           01465                 BSF     Select,RS       ; Select data mode
+0495   2???           01466                 CALL    send            ; and send code
+0496   0850           01467                 MOVF    Num1Ten,W 
+0497   3E30           01468                 ADDLW   030     
+0498   14F4           01469                 BSF     Select,RS       ; Select data mode
+0499   2???           01470                 CALL    send            ; and send code
+049A   0851           01471                 MOVF    Num1Unit,W 
+049B   3E30           01472                 ADDLW   030     
+049C   14F4           01473                 BSF     Select,RS       ; Select data mode
+049D   2???           01474                 CALL    send            ; and send code
+                      01475         
+049E   0834           01476                 MOVF    Oper,W 
+049F   14F4           01477                 BSF     Select,RS       ; Select data mode
+04A0   2???           01478                 CALL    send            ; and send code
+                      01479         
+04A1   0852           01480                 MOVF    Num2TenTho,W 
+04A2   3E30           01481                 ADDLW   030     
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 35
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+04A3   14F4           01482                 BSF     Select,RS       ; Select data mode
+04A4   2???           01483                 CALL    send            ; and send code
+04A5   0853           01484                 MOVF    Num2Tho,W 
+04A6   3E30           01485                 ADDLW   030     
+04A7   14F4           01486                 BSF     Select,RS       ; Select data mode
+04A8   2???           01487                 CALL    send            ; and send code
+04A9   0854           01488                 MOVF    Num2Hun,W 
+04AA   3E30           01489                 ADDLW   030     
+04AB   14F4           01490                 BSF     Select,RS       ; Select data mode
+04AC   2???           01491                 CALL    send            ; and send code
+04AD   0855           01492                 MOVF    Num2Ten,W 
+04AE   3E30           01493                 ADDLW   030     
+04AF   14F4           01494                 BSF     Select,RS       ; Select data mode
+04B0   2???           01495                 CALL    send            ; and send code
+04B1   0856           01496                 MOVF    Num2Unit,W 
+04B2   3E30           01497                 ADDLW   030     
+04B3   14F4           01498                 BSF     Select,RS       ; Select data mode
+04B4   2???           01499                 CALL    send            ; and send code
+04B5   2???           01500         GOTO printOperation
+                      01501         
+                      01502         
+04B6                  01503 printResult:
+                      01504 
+04B6   3080           01505                 MOVLW   0x80            ; position to home cursor
+04B7   10F4           01506                 BCF     Select,RS       ; Select command mode
+04B8   2???           01507                 CALL    send            ; and send code
+                      01508         ;Sending DATA "Enter Operation" Message 
+04B9   3052           01509                 movlW A'R' 
+04BA   14F4           01510                 BSF     Select,RS       ; Select data mode
+04BB   2???           01511                 CALL    send            ; and send code
+04BC   3045           01512                 movlW A'E' 
+04BD   14F4           01513                 BSF     Select,RS       ; Select data mode
+04BE   2???           01514                 CALL    send            ; and send code
+04BF   3053           01515                 movlW A'S' 
+04C0   14F4           01516                 BSF     Select,RS       ; Select data mode
+04C1   2???           01517                 CALL    send            ; and send code
+04C2   3055           01518                 movlW A'U' 
+04C3   14F4           01519                 BSF     Select,RS       ; Select data mode
+04C4   2???           01520                 CALL    send            ; and send code
+04C5   304C           01521                 movlW A'L' 
+04C6   14F4           01522                 BSF     Select,RS       ; Select data mode
+04C7   2???           01523                 CALL    send            ; and send code
+04C8   3054           01524                 movlW A'T' 
+04C9   14F4           01525                 BSF     Select,RS       ; Select data mode
+04CA   2???           01526                 CALL    send            ; and send code
+04CB   303A           01527                 movlW A':' 
+04CC   14F4           01528                 BSF     Select,RS       ; Select data mode
+04CD   2???           01529                 CALL    send            ; and send code
+04CE   3020           01530                 movlW A' ' 
+04CF   14F4           01531                 BSF     Select,RS       ; Select data mode
+04D0   2???           01532                 CALL    send            ; and send code
+04D1   3020           01533                 movlW A' ' 
+04D2   14F4           01534                 BSF     Select,RS       ; Select data mode
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 36
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+04D3   2???           01535                 CALL    send            ; and send code
+04D4   3020           01536                 movlW A' ' 
+04D5   14F4           01537                 BSF     Select,RS       ; Select data mode
+04D6   2???           01538                 CALL    send            ; and send code
+04D7   3020           01539                 movlW A' ' 
+04D8   14F4           01540                 BSF     Select,RS       ; Select data mode
+04D9   2???           01541                 CALL    send            ; and send code
+04DA   3020           01542                 movlW A' ' 
+04DB   14F4           01543                 BSF     Select,RS       ; Select data mode
+04DC   2???           01544                 CALL    send            ; and send code
+04DD   3020           01545                 movlW A' ' 
+04DE   14F4           01546                 BSF     Select,RS       ; Select data mode
+04DF   2???           01547                 CALL    send
+04E0   3020           01548                 movlW A' ' 
+04E1   14F4           01549                 BSF     Select,RS       ; Select data mode
+04E2   2???           01550                 CALL    send
+04E3   3020           01551                 movlW A' ' 
+04E4   14F4           01552                 BSF     Select,RS       ; Select data mode
+04E5   2???           01553                 CALL    send
+04E6   3020           01554                 movlW A' ' 
+04E7   14F4           01555                 BSF     Select,RS       ; Select data mode
+04E8   2???           01556                 CALL    send
+                      01557                 
+                      01558         
+04E9   30C0           01559                 MOVLW   0xC0            ; Move the cursor to beginning of Second Line
+04EA   10F4           01560                 BCF     Select,RS       ; Select command mode
+04EB   2???           01561                 CALL    send            ; and send code
+                      01562         
+04EC   0836           01563                 MOVF    ResultHunTho,W 
+04ED   3E30           01564                 ADDLW   030     
+04EE   14F4           01565                 BSF     Select,RS       ; Select data mode
+04EF   2???           01566                 CALL    send            ; and send code
+04F0   0837           01567                 MOVF    ResultTenTho,W 
+04F1   3E30           01568                 ADDLW   030     
+04F2   14F4           01569                 BSF     Select,RS       ; Select data mode
+04F3   2???           01570                 CALL    send            ; and send code
+04F4   0838           01571                 MOVF    ResultTho,W 
+04F5   3E30           01572                 ADDLW   030     
+04F6   14F4           01573                 BSF     Select,RS       ; Select data mode
+04F7   2???           01574                 CALL    send            ; and send code
+04F8   0839           01575                 MOVF    ResultHun,W 
+04F9   14F4           01576                 BSF     Select,RS       ; Select data mode
+04FA   3E30           01577                 ADDLW   030
+04FB   2???           01578                 CALL    send            ; and send code
+04FC   0840           01579                 MOVF    ResultTen,W     
+04FD   3E30           01580                 ADDLW   030
+04FE   14F4           01581                 BSF     Select,RS       ; Select data mode
+04FF   2???           01582                 CALL    send            ; and send code
+0500   0841           01583                 MOVF    ResultUnit,W 
+0501   3E30           01584                 ADDLW   030
+0502   14F4           01585                 BSF     Select,RS       ; Select data mode
+0503   2???           01586                 CALL    send            ; and send code
+                      01587                 
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 37
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0504   0867           01588                 MOVF    divFlag,W               ; check div flag
+0505   00B5           01589                 MOVWF   Temp
+0506   3001           01590                 MOVLW   01
+Message[305]: Using default destination of 1 (file).
+0507   02B5           01591                 SUBWF   Temp
+0508   1903           01592                 BTFSC   STATUS,Z
+0509   2???           01593                 GOTO printWithMod
+050A   2???           01594                 GOTO printWithoutMod
+                      01595                 
+050B                  01596 printWithoutMod:
+050B   3020           01597                 movlW A' ' 
+050C   14F4           01598                 BSF     Select,RS       ; Select data mode
+050D   2???           01599                 CALL    send
+050E   3020           01600                 movlW A' ' 
+050F   14F4           01601                 BSF     Select,RS       ; Select data mode
+0510   2???           01602                 CALL    send
+0511   3020           01603                 movlW A' ' 
+0512   14F4           01604                 BSF     Select,RS       ; Select data mode
+0513   2???           01605                 CALL    send
+0514   3020           01606                 movlW A' ' 
+0515   14F4           01607                 BSF     Select,RS       ; Select data mode
+0516   2???           01608                 CALL    send
+0517   3020           01609                 movlW A' ' 
+0518   14F4           01610                 BSF     Select,RS       ; Select data mode
+0519   2???           01611                 CALL    send
+051A   3020           01612                 movlW A' ' 
+051B   14F4           01613                 BSF     Select,RS       ; Select data mode
+051C   2???           01614                 CALL    send
+051D   3020           01615                 movlW A' ' 
+051E   14F4           01616                 BSF     Select,RS       ; Select data mode
+051F   2???           01617                 CALL    send
+0520   3020           01618                 movlW A' ' 
+0521   14F4           01619                 BSF     Select,RS       ; Select data mode
+0522   2???           01620                 CALL    send
+0523   3020           01621                 movlW A' ' 
+0524   14F4           01622                 BSF     Select,RS       ; Select data mode
+0525   2???           01623                 CALL    send
+0526   3020           01624                 movlW A' ' 
+0527   14F4           01625                 BSF     Select,RS       ; Select data mode
+0528   2???           01626                 CALL    send
+                      01627                 
+0529   2???           01628                 GOTO printOperation
+                      01629                 
+Warning[207]: Found label after column 1. (printWithMod)
+052A                  01630         printWithMod:
+052A   3072           01631                 movlW A'r' 
+052B   14F4           01632                 BSF     Select,RS       ; Select data mode
+052C   2???           01633                 CALL    send
+                      01634                 
+052D   0842           01635                 MOVF    TempTenTho,W 
+052E   3E30           01636                 ADDLW   030     
+052F   14F4           01637                 BSF     Select,RS       ; Select data mode
+0530   2???           01638                 CALL    send            ; and send code
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 38
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0531   0843           01639                 MOVF    TempTho,W 
+0532   3E30           01640                 ADDLW   030     
+0533   14F4           01641                 BSF     Select,RS       ; Select data mode
+0534   2???           01642                 CALL    send            ; and send code
+0535   0844           01643                 MOVF    TempHun,W 
+0536   14F4           01644                 BSF     Select,RS       ; Select data mode
+0537   3E30           01645                 ADDLW   030
+0538   2???           01646                 CALL    send            ; and send code
+0539   0845           01647                 MOVF    TempTen,W       
+053A   3E30           01648                 ADDLW   030
+053B   14F4           01649                 BSF     Select,RS       ; Select data mode
+053C   2???           01650                 CALL    send            ; and send code
+053D   0846           01651                 MOVF    TempUnit,W 
+053E   3E30           01652                 ADDLW   030
+053F   14F4           01653                 BSF     Select,RS       ; Select data mode
+0540   2???           01654                 CALL    send            ; and send code
+0541   3020           01655                 movlW A' ' 
+0542   14F4           01656                 BSF     Select,RS       ; Select data mode
+0543   2???           01657                 CALL    send
+0544   3020           01658                 movlW A' ' 
+0545   14F4           01659                 BSF     Select,RS       ; Select data mode
+0546   2???           01660                 CALL    send
+0547   3020           01661                 movlW A' ' 
+0548   14F4           01662                 BSF     Select,RS       ; Select data mode
+0549   2???           01663                 CALL    send
+054A   3020           01664                 movlW A' ' 
+054B   14F4           01665                 BSF     Select,RS       ; Select data mode
+054C   2???           01666                 CALL    send
+                      01667                 
+054D   2???           01668                 GOTO printOperation
+                      01669         
+054E                  01670 printKeep:
+                      01671 
+054E   3080           01672                 MOVLW   0x80            ; position to home cursor
+054F   10F4           01673                 BCF     Select,RS       ; Select command mode
+0550   2???           01674                 CALL    send            ; and send code
+                      01675         ;Sending DATA "Enter Keep" Message 
+0551   304B           01676                 movlW A'K' 
+0552   14F4           01677                 BSF     Select,RS       ; Select data mode
+0553   2???           01678                 CALL    send            ; and send code
+0554   3045           01679                 movlW A'E' 
+0555   14F4           01680                 BSF     Select,RS       ; Select data mode
+0556   2???           01681                 CALL    send            ; and send code
+0557   3045           01682                 movlW A'E' 
+0558   14F4           01683                 BSF     Select,RS       ; Select data mode
+0559   2???           01684                 CALL    send            ; and send code
+055A   3050           01685                 movlW A'P' 
+055B   14F4           01686                 BSF     Select,RS       ; Select data mode
+055C   2???           01687                 CALL    send            ; and send code
+055D   303F           01688                 movlW A'?' 
+055E   14F4           01689                 BSF     Select,RS       ; Select data mode
+055F   2???           01690                 CALL    send            ; and send code
+0560   305B           01691                 movlW A'[' 
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 39
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0561   14F4           01692                 BSF     Select,RS       ; Select data mode
+0562   2???           01693                 CALL    send            ; and send code
+0563   3031           01694                 movlW A'1' 
+0564   14F4           01695                 BSF     Select,RS       ; Select data mode
+0565   2???           01696                 CALL    send            ; and send code
+0566   303A           01697                 movlW A':' 
+0567   14F4           01698                 BSF     Select,RS       ; Select data mode
+0568   2???           01699                 CALL    send            ; and send code
+0569   3059           01700                 movlW A'Y' 
+056A   14F4           01701                 BSF     Select,RS       ; Select data mode
+056B   2???           01702                 CALL    send            ; and send code
+056C   302C           01703                 movlW A',' 
+056D   14F4           01704                 BSF     Select,RS       ; Select data mode
+056E   2???           01705                 CALL    send            ; and send code
+056F   3020           01706                 movlW A' ' 
+0570   14F4           01707                 BSF     Select,RS       ; Select data mode
+0571   2???           01708                 CALL    send            ; and send code
+0572   3032           01709                 movlW A'2' 
+0573   14F4           01710                 BSF     Select,RS       ; Select data mode
+0574   2???           01711                 CALL    send            ; and send code
+0575   303A           01712                 movlW A':' 
+0576   14F4           01713                 BSF     Select,RS       ; Select data mode
+0577   2???           01714                 CALL    send
+0578   304E           01715                 movlW A'N' 
+0579   14F4           01716                 BSF     Select,RS       ; Select data mode
+057A   2???           01717                 CALL    send
+057B   305D           01718                 movlW A']' 
+057C   14F4           01719                 BSF     Select,RS       ; Select data mode
+057D   2???           01720                 CALL    send
+057E   3020           01721                 movlW A' ' 
+057F   14F4           01722                 BSF     Select,RS       ; Select data mode
+0580   2???           01723                 CALL    send
+0581   2???           01724                 GOTO printOperation
+                      01725 
+3731                  01726         End
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 40
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ADCON0                            0000001F
+ADCON1                            0000009F
+ADCS0                             00000006
+ADCS1                             00000007
+ADCS2                             00000006
+ADDEN                             00000003
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+BCLIE                             00000003
+BCLIF                             00000003
+BF                                00000000
+BRGH                              00000002
+C                                 00000000
+C1INV                             00000004
+C1OUT                             00000006
+C2INV                             00000005
+C2OUT                             00000007
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           0000001D
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1                             00000015
+CCPR1H                            00000016
+CCPR1L                            00000015
+CCPR2                             0000001B
+CCPR2H                            0000001C
+CCPR2L                            0000001B
+CHS0                              00000003
+CHS1                              00000004
+CHS2                              00000005
+CIS                               00000003
+CKE                               00000006
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 41
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CKP                               00000004
+CM0                               00000000
+CM1                               00000001
+CM2                               00000002
+CMCON                             0000009C
+CMIE                              00000006
+CMIF                              00000006
+CREN                              00000004
+CSRC                              00000007
+CVR0                              00000000
+CVR1                              00000001
+CVR2                              00000002
+CVR3                              00000003
+CVRCON                            0000009D
+CVREN                             00000007
+CVROE                             00000006
+CVRR                              00000005
+D                                 00000005
+DATA_ADDRESS                      00000005
+DC                                00000001
+D_A                               00000005
+D_NOT_A                           00000005
+DivLoop                           0000022B
+E                                 00000002
+EEADR                             0000010D
+EEADRH                            0000010F
+EECON1                            0000018C
+EECON2                            0000018D
+EEDATA                            0000010C
+EEDATH                            0000010E
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+EndISR                            000003E5
+F                                 00000001
+FERR                              00000002
+FSR                               00000004
+GCEN                              00000007
+GIE                               00000007
+GO                                00000002
+GO_DONE                           00000002
+GO_NOT_DONE                       00000002
+HunAdd                            000001EB
+HunNotMax                         000000B3
+HunNotMax2                        00000158
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+IBF                               00000007
+IBOV                              00000005
+INDF                              00000000
+INTCON                            0000000B
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 42
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+ISR                               00000005
+ModLoop                           00000302
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+NOT_BO                            00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000002
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_RC8                           00000006
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_TX8                           00000006
+NOT_W                             00000002
+NOT_WRITE                         00000002
+Num1Hun                           00000049
+Num1Ten                           00000050
+Num1TenTho                        00000047
+Num1Tho                           00000048
+Num1Unit                          00000051
+Num2Hun                           00000054
+Num2Ten                           00000055
+Num2TenTho                        00000052
+Num2Tho                           00000053
+Num2Unit                          00000056
+OBF                               00000006
+OERR                              00000001
+OPTION_REG                        00000081
+Oper                              00000034
+OutCod                            00000075
+P                                 00000004
+PCFG0                             00000000
+PCFG1                             00000001
+PCFG2                             00000002
+PCFG3                             00000003
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PEIE                              00000006
+PEN                               00000002
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+PIR2                              0000000D
+PORTA                             00000005
+PORTB                             00000006
+PORTC                             00000007
+PORTD                             00000008
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 43
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PORTE                             00000009
+PR2                               00000092
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PSPIE                             00000007
+PSPIF                             00000007
+PSPMODE                           00000004
+Point                             00000073
+PushInterrupt                     00000034
+R                                 00000002
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RA5                               00000005
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RC0                               00000000
+RC1                               00000001
+RC2                               00000002
+RC3                               00000003
+RC4                               00000004
+RC5                               00000005
+RC6                               00000006
+RC7                               00000007
+RC8_9                             00000006
+RC9                               00000006
+RCD8                              00000000
+RCEN                              00000003
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+RD0                               00000000
+RD1                               00000001
+RD2                               00000002
+RD3                               00000003
+RD4                               00000004
+RD5                               00000005
+RD6                               00000006
+RD7                               00000007
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 44
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RE0                               00000000
+RE1                               00000001
+RE2                               00000002
+READ_WRITE                        00000002
+RP0                               00000005
+RP1                               00000006
+RS                                00000001
+RSEN                              00000001
+RX9                               00000006
+RX9D                              00000000
+R_NOT_W                           00000002
+R_W                               00000002
+ResultCalc                        000001AE
+ResultHun                         00000039
+ResultHunT                        00000064
+ResultHunTho                      00000036
+ResultTen                         00000040
+ResultTenT                        00000065
+ResultTenTho                      00000037
+ResultTenThoT                     00000062
+ResultTho                         00000038
+ResultThoT                        00000063
+ResultUnit                        00000041
+ResultUnitT                       00000066
+S                                 00000003
+SEN                               00000000
+SMP                               00000007
+SPBRG                             00000099
+SPEN                              00000007
+SREN                              00000005
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+SSPCON2                           00000091
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPOV                             00000006
+SSPSTAT                           00000094
+STATUS                            00000003
+SYNC                              00000004
+Select                            00000074
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 45
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+T1INSYNC                          00000002
+T1OSCEN                           00000003
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR1                              0000000E
+TMR1CS                            00000001
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOUTPS0                           00000003
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISA5                            00000005
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRISC                             00000087
+TRISC0                            00000000
+TRISC1                            00000001
+TRISC2                            00000002
+TRISC3                            00000003
+TRISC4                            00000004
+TRISC5                            00000005
+TRISC6                            00000006
+TRISC7                            00000007
+TRISD                             00000088
+TRISD0                            00000000
+TRISD1                            00000001
+TRISD2                            00000002
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 46
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TRISD3                            00000003
+TRISD4                            00000004
+TRISD5                            00000005
+TRISD6                            00000006
+TRISD7                            00000007
+TRISE                             00000089
+TRISE0                            00000000
+TRISE1                            00000001
+TRISE2                            00000002
+TRMT                              00000001
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+TXSTA                             00000098
+Temp                              00000035
+TempHun                           00000044
+TempTen                           00000045
+TempTenTho                        00000042
+TempTho                           00000043
+TempUnit                          00000046
+TenNotMax                         000000D7
+TenNotMax2                        0000017C
+TenThoAdd                         0000020D
+TensAdd                           000001DA
+ThoAdd                            000001FC
+Timer1                            00000070
+TimerX                            00000071
+UA                                00000001
+UnitNotMax                        00000102
+UnitNotMax2                       000001A7
+Var                               00000072
+W                                 00000000
+WCOL                              00000007
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_BOREN_OFF                        00003FBF
+_BOREN_ON                         00003FFF
+_CONFIG                           00002007
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_ALL                           00001FFF
+_CP_OFF                           00003FFF
+_CP_ON                            00001FFF
+_DEBUG_OFF                        00003FFF
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 47
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_DEBUG_ON                         000037FF
+_DEVID1                           00002006
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_LVP_OFF                          00003F7F
+_LVP_ON                           00003FFF
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_WRT_1FOURTH                      00003BFF
+_WRT_256                          00003DFF
+_WRT_HALF                         000039FF
+_WRT_OFF                          00003FFF
+_XT_OSC                           00003FFD
+__16F877A                         00000001
+__DEBUG                           1
+addHunDiv                         000002E4
+addTenDiv                         000002DC
+addTenThoDiv                      000002F4
+addThoDiv                         000002EC
+addcalc                           000001CA
+addoper                           0000011B
+askKeep                           000003B8
+carryHun                          000001E6
+carryHunTho                       00000219
+carryReg                          00000060
+carryTen                          000001D5
+carryTenTho                       00000208
+carryTho                          000001F7
+continue                          000003DE
+cursor                            00000057
+divFlag                           00000067
+divcalc                           0000021F
+divoper                           0000011E
+exit                              000003AD
+exitDiv                           000002F7
+fullHun10                         00000199
+fullHun3                          000000D0
+fullHun4                          000000F4
+fullHun9                          00000175
+fullTen10                         000001A0
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 48
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+fullTen4                          000000FB
+fullTenTho1                       00000096
+fullTenTho10                      0000018B
+fullTenTho2                       000000A5
+fullTenTho3                       000000C2
+fullTenTho4                       000000E6
+fullTenTho7                       0000013B
+fullTenTho8                       0000014A
+fullTenTho9                       00000167
+fullTho10                         00000192
+fullTho2                          000000AC
+fullTho3                          000000C9
+fullTho4                          000000ED
+fullTho8                          00000151
+fullTho9                          0000016E
+incrementCounter                  00000026
+inid                              0000041A
+init                              000003E8
+keepPushCounter                   00000068
+loop1                             000003FC
+loopX                             00000401
+modcalc                           000002F8
+modoper                           00000121
+onems                             000003FA
+printInput                        00000457
+printKeep                         0000054E
+printOperation                    0000044A
+printResult                       000004B6
+printWithMod                      0000052A
+printWithoutMod                   0000050B
+pulseE                            00000405
+restaetWithClear                  000003DB
+restaetWithoutClear               000003D8
+restart                           000003C5
+resultFlag                        00000058
+send                              0000040A
+start                             00000435
+state0                            00000080
+state1                            00000088
+state10                           00000183
+state11                           000003C3
+state2                            0000009D
+state3                            000000BA
+state4                            000000DE
+state5                            00000109
+state6                            00000125
+state7                            0000012D
+state8                            00000142
+state9                            0000015F
+subDone                           000003A2
+subDoneDiv                        000002CB
+subHun                            00000319
+subHunDiv                         00000242
+MPASM  5.43                      PROJECT4.ASM   7-26-2023  21:00:19         PAGE 49
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+subTen                            00000337
+subTenDiv                         00000260
+subUnit                           00000364
+subUnitDiv                        0000028D
+takeFromHun                       0000033E
+takeFromHun2                      00000376
+takeFromHun2Div                   0000029F
+takeFromHunDiv                    00000267
+takeFromTen                       0000036B
+takeFromTenDiv                    00000294
+takeFromTenTho                    0000030F
+takeFromTenTho2                   0000032B
+takeFromTenTho2Div                00000254
+takeFromTenTho3                   00000356
+takeFromTenTho3Div                0000027F
+takeFromTenTho4                   00000392
+takeFromTenTho4Div                000002BB
+takeFromTenThoDiv                 00000238
+takeFromTho                       00000320
+takeFromTho2                      00000349
+takeFromTho2Div                   00000272
+takeFromTho3                      00000383
+takeFromTho3Div                   000002AC
+takeFromThoDiv                    00000249
+timer0OverflowCounter             00000059
+twoSecondsReached                 00000012
+xms                               00000400
+
+Errors   :     0
+Warnings :    95 reported,     0 suppressed
+Messages :   111 reported,     0 suppressed
+
+

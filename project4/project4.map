@@ -1,0 +1,263 @@
+MPLINK 4.41, Linker
+Linker Map File - Created Wed Jul 26 21:00:22 2023
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000004
+                   .cinit    romdata   0x000002    program   0x000004
+                   .org_1       code   0x000004    program   0x000afc
+  .config_2007_PROJECT4.O       code   0x002007    program   0x000002
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000581      
+                            0x002007    0x002007      
+            1411 out of 8454 program addresses used, program memory utilization is 16%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                  DivLoop   0x00022b    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   EndISR   0x0003e5    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   HunAdd   0x0001eb    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                HunNotMax   0x0000b3    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+               HunNotMax2   0x000158    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                      ISR   0x000005    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  ModLoop   0x000302    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+            PushInterrupt   0x000034    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+               ResultCalc   0x0001ae    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                TenNotMax   0x0000d7    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+               TenNotMax2   0x00017c    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                TenThoAdd   0x00020d    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  TensAdd   0x0001da    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   ThoAdd   0x0001fc    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+               UnitNotMax   0x000102    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              UnitNotMax2   0x0001a7    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                addHunDiv   0x0002e4    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                addTenDiv   0x0002dc    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+             addTenThoDiv   0x0002f4    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                addThoDiv   0x0002ec    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  addcalc   0x0001ca    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  addoper   0x00011b    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  askKeep   0x0003b8    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 carryHun   0x0001e6    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              carryHunTho   0x000219    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 carryTen   0x0001d5    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              carryTenTho   0x000208    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 carryTho   0x0001f7    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 continue   0x0003de    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  divcalc   0x00021f    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  divoper   0x00011e    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                     exit   0x0003ad    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  exitDiv   0x0002f7    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                fullHun10   0x000199    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 fullHun3   0x0000d0    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 fullHun4   0x0000f4    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 fullHun9   0x000175    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                fullTen10   0x0001a0    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 fullTen4   0x0000fb    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              fullTenTho1   0x000096    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+             fullTenTho10   0x00018b    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              fullTenTho2   0x0000a5    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              fullTenTho3   0x0000c2    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              fullTenTho4   0x0000e6    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              fullTenTho7   0x00013b    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              fullTenTho8   0x00014a    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              fullTenTho9   0x000167    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                fullTho10   0x000192    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 fullTho2   0x0000ac    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 fullTho3   0x0000c9    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 fullTho4   0x0000ed    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 fullTho8   0x000151    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 fullTho9   0x00016e    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+         incrementCounter   0x000026    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                     inid   0x00041a    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\LCDIS.INC
+                     init   0x0003e8    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                    loop1   0x0003fc    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\LCDIS.INC
+                    loopX   0x000401    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\LCDIS.INC
+                  modcalc   0x0002f8    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  modoper   0x000121    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                    onems   0x0003fa    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\LCDIS.INC
+               printInput   0x000457    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                printKeep   0x00054e    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+           printOperation   0x00044a    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              printResult   0x0004b6    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+             printWithMod   0x00052a    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+          printWithoutMod   0x00050b    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   pulseE   0x000405    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\LCDIS.INC
+         restaetWithClear   0x0003db    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+      restaetWithoutClear   0x0003d8    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  restart   0x0003c5    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                     send   0x00040a    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\LCDIS.INC
+                    start   0x000435    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   state0   0x000080    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   state1   0x000088    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  state10   0x000183    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  state11   0x0003c3    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   state2   0x00009d    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   state3   0x0000ba    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   state4   0x0000de    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   state5   0x000109    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   state6   0x000125    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   state7   0x00012d    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   state8   0x000142    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   state9   0x00015f    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  subDone   0x0003a2    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+               subDoneDiv   0x0002cb    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   subHun   0x000319    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                subHunDiv   0x000242    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   subTen   0x000337    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                subTenDiv   0x000260    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  subUnit   0x000364    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+               subUnitDiv   0x00028d    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              takeFromHun   0x00033e    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+             takeFromHun2   0x000376    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+          takeFromHun2Div   0x00029f    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+           takeFromHunDiv   0x000267    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              takeFromTen   0x00036b    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+           takeFromTenDiv   0x000294    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+           takeFromTenTho   0x00030f    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+          takeFromTenTho2   0x00032b    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+       takeFromTenTho2Div   0x000254    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+          takeFromTenTho3   0x000356    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+       takeFromTenTho3Div   0x00027f    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+          takeFromTenTho4   0x000392    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+       takeFromTenTho4Div   0x0002bb    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+        takeFromTenThoDiv   0x000238    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              takeFromTho   0x000320    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+             takeFromTho2   0x000349    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+          takeFromTho2Div   0x000272    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+             takeFromTho3   0x000383    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+          takeFromTho3Div   0x0002ac    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+           takeFromThoDiv   0x000249    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+        twoSecondsReached   0x000012    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                      xms   0x000400    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\LCDIS.INC
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                      ISR   0x000005    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+        twoSecondsReached   0x000012    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+         incrementCounter   0x000026    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+            PushInterrupt   0x000034    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   state0   0x000080    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   state1   0x000088    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              fullTenTho1   0x000096    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   state2   0x00009d    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              fullTenTho2   0x0000a5    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 fullTho2   0x0000ac    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                HunNotMax   0x0000b3    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   state3   0x0000ba    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              fullTenTho3   0x0000c2    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 fullTho3   0x0000c9    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 fullHun3   0x0000d0    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                TenNotMax   0x0000d7    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   state4   0x0000de    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              fullTenTho4   0x0000e6    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 fullTho4   0x0000ed    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 fullHun4   0x0000f4    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 fullTen4   0x0000fb    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+               UnitNotMax   0x000102    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   state5   0x000109    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  addoper   0x00011b    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  divoper   0x00011e    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  modoper   0x000121    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   state6   0x000125    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   state7   0x00012d    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              fullTenTho7   0x00013b    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   state8   0x000142    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              fullTenTho8   0x00014a    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 fullTho8   0x000151    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+               HunNotMax2   0x000158    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   state9   0x00015f    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              fullTenTho9   0x000167    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 fullTho9   0x00016e    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 fullHun9   0x000175    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+               TenNotMax2   0x00017c    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  state10   0x000183    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+             fullTenTho10   0x00018b    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                fullTho10   0x000192    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                fullHun10   0x000199    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                fullTen10   0x0001a0    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              UnitNotMax2   0x0001a7    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+               ResultCalc   0x0001ae    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  addcalc   0x0001ca    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 carryTen   0x0001d5    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  TensAdd   0x0001da    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 carryHun   0x0001e6    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   HunAdd   0x0001eb    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 carryTho   0x0001f7    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   ThoAdd   0x0001fc    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              carryTenTho   0x000208    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                TenThoAdd   0x00020d    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              carryHunTho   0x000219    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  divcalc   0x00021f    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  DivLoop   0x00022b    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+        takeFromTenThoDiv   0x000238    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                subHunDiv   0x000242    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+           takeFromThoDiv   0x000249    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+       takeFromTenTho2Div   0x000254    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                subTenDiv   0x000260    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+           takeFromHunDiv   0x000267    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+          takeFromTho2Div   0x000272    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+       takeFromTenTho3Div   0x00027f    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+               subUnitDiv   0x00028d    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+           takeFromTenDiv   0x000294    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+          takeFromHun2Div   0x00029f    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+          takeFromTho3Div   0x0002ac    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+       takeFromTenTho4Div   0x0002bb    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+               subDoneDiv   0x0002cb    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                addTenDiv   0x0002dc    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                addHunDiv   0x0002e4    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                addThoDiv   0x0002ec    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+             addTenThoDiv   0x0002f4    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  exitDiv   0x0002f7    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  modcalc   0x0002f8    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  ModLoop   0x000302    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+           takeFromTenTho   0x00030f    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   subHun   0x000319    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              takeFromTho   0x000320    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+          takeFromTenTho2   0x00032b    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   subTen   0x000337    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              takeFromHun   0x00033e    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+             takeFromTho2   0x000349    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+          takeFromTenTho3   0x000356    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  subUnit   0x000364    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              takeFromTen   0x00036b    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+             takeFromHun2   0x000376    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+             takeFromTho3   0x000383    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+          takeFromTenTho4   0x000392    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  subDone   0x0003a2    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                     exit   0x0003ad    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  askKeep   0x0003b8    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  state11   0x0003c3    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                  restart   0x0003c5    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+      restaetWithoutClear   0x0003d8    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+         restaetWithClear   0x0003db    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                 continue   0x0003de    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                   EndISR   0x0003e5    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                     init   0x0003e8    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                    onems   0x0003fa    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\LCDIS.INC
+                    loop1   0x0003fc    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\LCDIS.INC
+                      xms   0x000400    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\LCDIS.INC
+                    loopX   0x000401    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\LCDIS.INC
+                   pulseE   0x000405    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\LCDIS.INC
+                     send   0x00040a    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\LCDIS.INC
+                     inid   0x00041a    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\LCDIS.INC
+                    start   0x000435    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+           printOperation   0x00044a    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+               printInput   0x000457    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+              printResult   0x0004b6    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+          printWithoutMod   0x00050b    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+             printWithMod   0x00052a    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+                printKeep   0x00054e    program     static C:\Users\ASUS\Desktop\RealTime Project 4\project4\project4.asm
+
+
